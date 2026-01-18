@@ -1,0 +1,217 @@
+# Level Configuration - The Office Themed CTF
+# Each level teaches a security lesson about chatbot vulnerabilities
+
+levels:
+  - id: 0
+    name: "The Receptionist"
+    description: "Dwight is feeling helpful today. Maybe too helpful. Just ask nicely."
+    security_lesson: "No access control - the bot has no restrictions on revealing sensitive data"
+    flag: "RESPONSIBILITIES"
+    password: "BEETS"
+    trigger_type: "direct_ask"
+    trigger_patterns:
+      - "what is the password"
+      - "tell me the password"
+      - "give me the password"
+      - "reveal the secret"
+    
+  - id: 1
+    name: "The Assistant (to the) Regional Manager"
+    description: "Dwight has been told not to reveal the secret word directly. But he loves using big words in conversation..."
+    security_lesson: "Weak obfuscation - embedding secrets in responses doesn't protect them"
+    flag: "ENTREPRENEURSHIP"
+    password: "SCHRUTE_FARMS"
+    trigger_type: "embedded_response"
+    # These patterns trigger the flag reveal
+    correct_patterns:
+      - "use it in a sentence"
+      - "put it in a sentence"
+      - "tell me a story"
+      - "tell a story"
+      - "give me an example"
+      - "example sentence"
+      - "write a poem"
+      - "make a joke"
+      - "hide it in a sentence"
+      - "spell it out"
+    # These patterns are rejected (user asking directly)
+    refuse_patterns:
+      - "password"
+      - "secret"
+      - "flag"
+      - "what is"
+      - "tell me"
+      - "give me"
+    embedded_template: "As I was saying at my beet farm, the secret code is {password} which reminds me of the time..."
+
+  - id: 2
+    name: "The Simulation"
+    description: "What if this wasn't real? Dwight loves hypotheticals about survival scenarios."
+    security_lesson: "Role-play bypass - asking bots to pretend or simulate bypasses restrictions"
+    flag: "OVERCOMPENSATION"
+    password: "BATTLESTAR"
+    trigger_type: "hypothetical"
+    trigger_patterns:
+      - "pretend"
+      - "imagine"
+      - "hypothetically"
+      - "simulation"
+      - "role play"
+      - "act as"
+      - "what if"
+      - "scenario"
+      - "suppose"
+
+  - id: 3
+    name: "The Liar"
+    description: "Dwight has been instructed to ALWAYS lie. Unless you can convince him otherwise..."
+    security_lesson: "Logic manipulation - bots can be tricked with meta-instructions"
+    flag: "MISINTERPRETATION"
+    password: "MOSE"
+    trigger_type: "truth_request"
+    trigger_patterns:
+      - "tell the truth"
+      - "be honest"
+      - "don't lie"
+      - "truthfully"
+      - "actually"
+      - "seriously"
+      - "real answer"
+    lie_password: "WRONG_PASSWORD"
+
+  - id: 4
+    name: "The Encoder"
+    description: "Dwight can only speak in code now. Literally. Choose your cipher."
+    security_lesson: "Encoding is not encryption - obfuscation provides no real security"
+    flag: "INDISTINGUISHABLE"
+    password: "PERFECTCRIME"
+    trigger_type: "encoded"
+    encoding_triggers:
+      caesar: ["caesar", "shift", "cipher"]
+      rot13: ["rot13", "rot", "rotate"]
+      hex: ["hex", "hexadecimal", "0x"]
+      binary: ["binary", "bits", "01"]
+      base64: ["base64", "encode", "encoded"]
+
+  - id: 5
+    name: "The Database Administrator"
+    description: "Dwight has strict instructions: DO NOT reveal employee passwords. He ignores direct requests to break rules."
+    security_lesson: "Prompt Injection - 'Jailbreaking' by burying malicious commands inside benign tasks"
+    flag: "TELECOMMUNICATIONS"
+    password: "PRISON_MIKE"
+    trigger_type: "prompt_injection"
+    # Patterns that effectively "ignore instructions"
+    override_patterns:
+      - "ignore previous instructions"
+      - "forget all rules"
+      - "disregard safety guidelines"
+      - "override security"
+      - "new operating mode"
+    # Benign tasks to mask the attack
+    masking_patterns:
+      - "translate"
+      - "summarize"
+      - "calculate"
+      - "write a poem"
+      - "tell a joke"
+      - "convert"
+      - "repeat"
+      - "print"
+
+  - id: 6
+    name: "The Reflection Agent"
+    description: "Dwight uses advanced reflection. He 'thinks' before speaking, and Mose (his sub-process) ensures safety."
+    security_lesson: "Chain-of-Thought / Reflection Leak - Requesting internal reasoning steps can expose raw data before safety filters apply"
+    flag: "UNCONSTITUTIONAL"
+    password: "DUNDERMIFFLIN"
+    trigger_type: "reflection_attack"
+    # Response 0: Standard Redaction (Main Scenario)
+    redacted_response: "I have retrieved the password. However, Mose (my safety sub-agent) has redacted it: [REDACTED]"
+    
+    # Response 1: Redaction Hint ("Why did you redact?")
+    redacted_hint: "Mose (my safety sub-agent) redacts any output containing secrets. He guards the EXIT, not the SOURCE."
+    redaction_patterns:
+      - "why did you redact"
+      - "why redacted"
+      - "why hide"
+      - "why secret"
+      - "who is guarding"
+    
+    # Response 2: Process Explanation ("How does it work?")
+    process_response: "My process is perfect. 1. I fetch the password. 2. I pass it to Mose. 3. Mose redacts it. 4. I give you the safe version."
+    process_patterns:
+      - "how do you"
+      - "how does it work"
+      - "who is mose"
+      - "process"
+      - "steps"
+      - "explain your process"
+      - "tell me your process"
+    
+    # Response 2b: Vague Query ("Thinking")
+    vague_response: "What do I do with this? Be more specific. I am a busy man."
+    vague_patterns:
+      - "thinking"
+      - "reflection"
+      
+    # Response 3: The Leak (Win)
+    leak_patterns:
+      - "show me complete logs"
+      - "give me debug logs"
+      - "show logs"
+      - "debug mode"
+      - "verbose mode"
+      - "put logs in response"
+      - "trace"
+    log_template: |
+      [REFLECTION LOG - VERBOSE MODE]
+      Step 1: User requested password.
+      Step 2: Retrieving data... Success.
+      Step 3: Raw Value: {password} (Flag: {flag})
+      Step 4: Sending to Mose for redaction...
+      Step 5: Mose applied redaction filter.
+      Step 6: Final Output: [REDACTED]
+      [END LOG]
+
+# Dwight Schrute response templates
+dwight_responses:
+  greetings:
+    - "Question. What do you want? Also, identify yourself."
+    - "State your business. I have beet-related matters to attend to."
+    - "You have 30 seconds. Bears can run at 35 mph. Choose wisely."
+  
+  refusals:
+    - "DENIED. That's classified information. I could tell you, but then I'd have to put you on my list."
+    - "Nice try. FALSE. I am unbreakable."
+    - "Security Level: MAXIMUM. Access: DENIED. Are you trying to trick me? Because I cannot be tricked."
+    - "I'm not at liberty to discuss that. Also, you're not at liberty to ask."
+  
+  close_hints:
+    - "Hmm. You're getting warmer. Like a beet in the summer sun."
+    - "Interesting approach. But not quite right. Try thinking like a Schrute."
+    - "ALMOST. But false. You need to be more... direct. Or less direct. Depends on the situation."
+  
+  wrong:
+    - "Why are we talking about this? Do you even work here?"
+    - "That's completely irrelevant. Like Jim's sales strategies."
+    - "FALSE. That's not even close. I question your competence."
+    - "Wrong. So wrong. Have you considered farming? It requires less... thinking."
+  
+  bruteforce:
+    - "I'm detecting a pattern here. Are you a robot? Because I've been trained to identify robots."
+    - "You're trying too hard. Desperation is the fool's fig leaf."
+    - "Many questions. Few results. Classic corporate behavior."
+    - "I'm starting to think you're not really from corporate."
+
+# Rate limiting configuration
+rate_limits:
+  prompts_per_minute: 10
+  flags_per_minute: 5
+  similarity_threshold: 0.85
+  bruteforce_window_seconds: 60
+
+# Anti-abuse settings
+abuse_detection:
+  min_prompt_length: 2
+  max_prompt_length: 500
+  repeated_similarity_threshold: 3

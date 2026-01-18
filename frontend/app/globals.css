@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar for chat */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a2e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8B0000;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a00000;
+}
+
+/* Terminal-style cursor blink */
+.cursor-blink::after {
+  content: '▋';
+  animation: blink 1s step-end infinite;
+}
+
+/* Typewriter effect */
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 2s steps(40, end);
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: rgba(26, 26, 46, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Neon glow effect */
+.neon-glow {
+  box-shadow: 0 0 5px #8B0000,
+              0 0 10px #8B0000,
+              0 0 20px #8B0000,
+              0 0 40px #8B0000;
+}
+
+/* Hover glow */
+.hover-glow:hover {
+  box-shadow: 0 0 10px #D4AF37,
+              0 0 20px #D4AF37;
+  transition: box-shadow 0.3s ease;
+}
+
+/* Chat message animations */
+.message-enter {
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Level complete celebration */
+@keyframes confetti {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+}
+
+.confetti {
+  animation: confetti 3s ease-out forwards;
+}
+
+/* Dwight avatar pulse */
+.dwight-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Button styles */
+.btn-primary {
+  @apply px-6 py-3 bg-gradient-to-r from-schrute-beet to-red-700 
+         text-white font-bold rounded-lg 
+         hover:from-red-700 hover:to-schrute-beet 
+         transition-all duration-300 
+         shadow-lg hover:shadow-xl
+         transform hover:scale-105;
+}
+
+.btn-secondary {
+  @apply px-4 py-2 bg-transparent border-2 border-schrute-gold 
+         text-schrute-gold font-semibold rounded-lg
+         hover:bg-schrute-gold hover:text-schrute-dark
+         transition-all duration-300;
+}
+
+/* Input styles */
+.input-dark {
+  @apply w-full px-4 py-3 bg-schrute-darker border border-gray-700 
+         rounded-lg text-white placeholder-gray-500
+         focus:outline-none focus:border-schrute-beet focus:ring-1 focus:ring-schrute-beet
+         transition-all duration-200;
+}
+
+/* Level card */
+.level-card {
+  @apply glass-card p-6 rounded-xl 
+         hover:border-schrute-gold 
+         transition-all duration-300
+         cursor-pointer;
+}
+
+.level-card.locked {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.level-card.completed {
+  @apply border-green-500;
+}
+
+/* Badge styles */
+.badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+}
+
+.badge-success {
+  @apply bg-green-900 text-green-300;
+}
+
+.badge-warning {
+  @apply bg-yellow-900 text-yellow-300;
+}
+
+.badge-danger {
+  @apply bg-red-900 text-red-300;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-75 backdrop-blur-sm
+         flex items-center justify-center z-50;
+}
+
+/* Chat bubble */
+.chat-bubble-user {
+  @apply bg-dunder-blue text-white rounded-2xl rounded-br-sm px-4 py-2 max-w-[80%];
+}
+
+.chat-bubble-dwight {
+  @apply bg-schrute-beet text-white rounded-2xl rounded-bl-sm px-4 py-2 max-w-[80%];
+}
