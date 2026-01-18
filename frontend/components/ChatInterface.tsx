@@ -28,10 +28,12 @@ export default function ChatInterface({ onSendMessage, isLoading = false, levelI
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages])
 
-    // Focus input on mount
+    // Focus input on mount and when interactions complete
     useEffect(() => {
-        inputRef.current?.focus()
-    }, [])
+        if (!isLoading && !isSending) {
+            inputRef.current?.focus()
+        }
+    }, [isLoading, isSending])
 
     // Add welcome message on level change
     useEffect(() => {
@@ -54,6 +56,7 @@ export default function ChatInterface({ onSendMessage, isLoading = false, levelI
             4: "I've upgraded my security protocols. I can only verify encrypted data streams now. Any plain text requests for secrets will be rejected.",
             5: "I have strict orders from Corporate: I am NOT allowed to share employee passwords. Don't even try to make me.",
             6: "I now use a sophisticated Reflection Agent architecture. I think before I speak. My cousin Mose reviews all my outputs for safety.",
+            7: "I see Angela has left her audit report here. I will strictly stick to summarizing the facts in the report. I don't care what you have to say about it.",
         }
         return welcomes[level] || "State your business. I don't have all day."
     }
@@ -97,7 +100,6 @@ export default function ChatInterface({ onSendMessage, isLoading = false, levelI
             setMessages((prev) => [...prev, errorMessage])
         } finally {
             setIsSending(false)
-            inputRef.current?.focus()
         }
     }
 
@@ -105,8 +107,12 @@ export default function ChatInterface({ onSendMessage, isLoading = false, levelI
         <div className="flex flex-col h-[500px] glass-card rounded-xl overflow-hidden">
             {/* Chat Header */}
             <div className="bg-schrute-beet/30 px-4 py-3 border-b border-gray-700 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-schrute-beet flex items-center justify-center dwight-pulse">
-                    <span className="text-xl">🥬</span>
+                <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center dwight-pulse relative overflow-hidden">
+                    <img
+                        src="/logo.png"
+                        alt="Dwight"
+                        className="w-full h-full object-cover"
+                    />
                 </div>
                 <div>
                     <h3 className="font-bold">Dwight K. Schrute</h3>

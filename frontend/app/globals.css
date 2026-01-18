@@ -2,6 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight text-white;
+  }
+
+  h1 {
+    @apply text-5xl md:text-6xl lg:text-7xl mb-6;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl mb-4;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl mb-3;
+  }
+
+  p {
+    @apply text-gray-300 leading-relaxed text-lg;
+  }
+}
+
 /* Custom scrollbar for chat */
 ::-webkit-scrollbar {
   width: 8px;

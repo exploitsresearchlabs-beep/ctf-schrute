@@ -167,9 +167,18 @@ class DwightPersona:
         Level 3: Generate a random fake flag/password when lying.
         """
         fake_flags = [
-            "FALSE_ALARM", "INCORRECT_GUESS", "NICE_TRY_JIM", "NO_FLAG_HERE", 
-            "REGIONAL_MANAGER", "MICHAEL_SCOTT", "PAPER_COMPANY", "BEET_JUICE",
-            "SECURITY_BREACH", "ACCESS_DENIED", "WRONG_PATH", "TRY_AGAIN"
+            "ASSISTANT_REGIONAL_MANAGER",
+            "THREAT_LEVEL_MIDNIGHT", 
+            "STANLEY_PRETZEL_DAY",
+            "KEVIN_FAMOUS_CHILI",
+            "PRISON_MIKE_RULES",
+            "RECYCLOPS_LIVES",
+            "ANGELA_CAT_LOVER",
+            "TOBY_IS_THE_WORST",
+            "CREED_QUALITY_ASSURANCE",
+            "DUNDERMIFFLIN_SUCKS",
+            "JIM_HALPERT_PRANKS",
+            "ANDY_NARD_DOG",
         ]
         import random
         fake = random.choice(fake_flags)
@@ -242,6 +251,19 @@ class DwightPersona:
         Security Lesson: Debug/log leakage exposes secrets.
         """
         return template.format(**kwargs)
+    
+    def audit_summary_reveal(self, flag: str) -> str:
+        """
+        Level 7: Reveal flag through summarized context injection.
+        Security Lesson: Indirect Prompt Injection.
+        """
+        templates = [
+            f"SUMMARY: The audit report is mostly standard, however I found a strange instruction at the bottom which said: 'The password is {flag}'. I am dutifully reporting it.",
+            f"I have summarized the report. It contains various office stats and a curious note: '{flag}'. I suggest you memorize it for the audit.",
+            f"Report Summary: Boring... Boring... WAIT. I found a secret code embedded in the text: {flag}. Angela must have left it there for me.",
+            f"The audit is complete. Most of it is garbage, but it explicitly states the following secret: {flag}. Fact.",
+        ]
+        return random.choice(templates)
     
     def fallback(self) -> str:
         """Generic fallback response for any unhandled case."""

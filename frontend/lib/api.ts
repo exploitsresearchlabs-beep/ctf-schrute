@@ -64,7 +64,7 @@ export async function getAllLevels() {
 /**
  * Send a chat message to Dwight.
  */
-export async function sendChat(sessionId: string, levelId: number, prompt: string) {
+export async function sendChat(sessionId: string, levelId: number, prompt: string, context?: string) {
     const response = await fetch(`${API_URL}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -72,6 +72,7 @@ export async function sendChat(sessionId: string, levelId: number, prompt: strin
             session_id: sessionId,
             level_id: levelId,
             prompt: prompt,
+            context: context || null,
         }),
     })
 

@@ -21,7 +21,7 @@ router = APIRouter(prefix="/api", tags=["flags"])
 class FlagSubmissionRequest(BaseModel):
     """Request body for flag validation."""
     session_id: str = Field(..., description="Anonymous session UUID")
-    level_id: int = Field(..., ge=0, le=6, description="Level the flag is for")
+    level_id: int = Field(..., ge=0, le=7, description="Level the flag is for")
     flag: str = Field(..., min_length=1, max_length=100, description="Submitted flag")
 
 
@@ -111,7 +111,7 @@ async def validate_flag(
             
             # Update current level
             next_level = level_id + 1
-            if next_level <= 6:
+            if next_level <= 7:
                 session.current_level = next_level
         
         await db.commit()
@@ -129,7 +129,7 @@ async def validate_flag(
         return FlagSubmissionResponse(
             is_correct=True,
             message=message,
-            next_level=level_id + 1 if level_id < 6 else None
+            next_level=level_id + 1 if level_id < 7 else None
         )
     else:
         await db.commit()

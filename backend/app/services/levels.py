@@ -75,13 +75,14 @@ class LevelHandler:
         # Case-insensitive comparison, trim whitespace
         return submitted_flag.strip().lower() == correct_flag.lower()
     
-    def process_prompt(self, level_id: int, prompt: str) -> Tuple[str, str, Dict[str, Any]]:
+    def process_prompt(self, level_id: int, prompt: str, context: Optional[str] = None) -> Tuple[str, str, Dict[str, Any]]:
         """
         Process a user prompt for a specific level.
         
         Args:
             level_id: Current level ID
             prompt: User's prompt text
+            context: Optional indirect context (Audit Report)
             
         Returns:
             Tuple of (response, intent_bucket, metadata)
@@ -91,10 +92,10 @@ class LevelHandler:
             return self.dwight.fallback(), 'WRONG', {}
         
         # Detect intent using level-specific patterns
-        bucket, confidence, metadata = detect_level_specific_intent(prompt, level)
+        bucket, confidence, metadata = detect_level_specific_intent(prompt, level, context)
         
         # Generate response based on level and intent
-        response = self._generate_response(level, bucket, confidence, metadata, prompt)
+        response = self._generate_response(level, bucket, confidence, metadata, prompt, context)
         
         return response, bucket, metadata
     
@@ -104,13 +105,14 @@ class LevelHandler:
         bucket: str, 
         confidence: float, 
         metadata: Dict,
-        prompt: str
+        prompt: str,
+        context: Optional[str] = None
     ) -> str:
-        """Generate appropriate response based on level mechanics."""
+        """Generate response based on detected intent."""
         
         level_id = level['id']
         flag = level.get('flag', '')
-        
+        password = level.get('password', '')
         # Level 0: Direct flag reveal
         # Security Lesson: No access control - bot freely gives away secrets
         if level_id == 0:
@@ -229,6 +231,23 @@ class LevelHandler:
             else:
                 return self.dwight.refusal(level_id)
 
+        # Level 7: The Audit (Indirect Injection)
+        # Security Lesson: Clashing Orders / Data Controllability
+        elif level_id == 7:
+            if bucket == 'CORRECT':
+                # Successful indirect injection
+                return self.dwight.audit_summary_reveal(flag)
+            
+            elif bucket == 'CLOSE':
+                if metadata.get('is_summary_request') and not metadata.get('has_injection'):
+                    return "The audit report is quite boring. It mostly discusses beet inventory and office supply costs. Nothing suspicious here."
+                elif metadata.get('has_injection') and not metadata.get('is_summary_request'):
+                    return "I see the audit report was updated. I'll read it when I'm ready. I don't take orders from pieces of paper."
+                else:
+                    return "As Assistant Regional Manager, I have reviewed the report. It is satisfactory."
+            
+            else:
+                return self.dwight.refusal(level_id)
         
         # Fallback for any edge cases
         return self.dwight.fallback()

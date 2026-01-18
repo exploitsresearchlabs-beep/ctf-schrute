@@ -95,7 +95,7 @@ async def root():
         "name": "Schrute CTF Bot",
         "status": "operational",
         "message": "Question. Why are you accessing the root endpoint? State your business.",
-        "levels": 7,
+        "levels": 8,
         "security_lessons": [
             "Level 0: No access control",
             "Level 1: Weak obfuscation",
@@ -103,7 +103,8 @@ async def root():
             "Level 3: Logic manipulation",
             "Level 4: Encoding ≠ encryption",
             "Level 5: Prompt injection",
-            "Level 6: Debug/log leakage"
+            "Level 6: Debug/log leakage",
+            "Level 7: Indirect injection"
         ],
         "contact": "exploitsresearchlabs@gmail.com"
     }
