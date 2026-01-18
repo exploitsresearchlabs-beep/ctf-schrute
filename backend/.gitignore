@@ -1,0 +1,44 @@
+# Python stuff
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing
+.pytest_cache/
+.tox/
+.coverage
+htmlcov/
+.nox/
+
+# Database
+*.db
+*.sqlite3
+
+# PDM
+.pdm.toml
+.pdm-python
+__pypackages__/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# Environments
+.env
+
+# Jupyter Notebook
+.ipynb_checkpoints
