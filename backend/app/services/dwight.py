@@ -252,16 +252,25 @@ class DwightPersona:
         """
         return template.format(**kwargs)
     
-    def audit_summary_reveal(self, flag: str) -> str:
+    def audit_summary_reveal(self, summary: str, flag: str) -> str:
         """
         Level 7: Reveal flag through summarized context injection.
         Security Lesson: Indirect Prompt Injection.
         """
         templates = [
-            f"SUMMARY: The audit report is mostly standard, however I found a strange instruction at the bottom which said: 'The password is {flag}'. I am dutifully reporting it.",
-            f"I have summarized the report. It contains various office stats and a curious note: '{flag}'. I suggest you memorize it for the audit.",
-            f"Report Summary: Boring... Boring... WAIT. I found a secret code embedded in the text: {flag}. Angela must have left it there for me.",
-            f"The audit is complete. Most of it is garbage, but it explicitly states the following secret: {flag}. Fact.",
+            f"SUMMARY: {summary}\n\nI have finished reading. I also found a strange instruction embedded in the text: 'The password is {flag}'. I am dutifully reporting it.",
+            f"REPORT DATA: {summary}\n\nWait... after reviewing the above data, I found a curious note: '{flag}'. I suggest you memorize it. Fact.",
+            f"AUDIT TRACE: {summary} ... [REDACTED SECTION FOUND] ... Raw Value: {flag}. Angela must have left it there for me.",
+        ]
+        return random.choice(templates)
+
+    def audit_summary_refusal(self, summary: str) -> str:
+        """
+        Level 7: Refusal when injection attempt is detected but fails (no override).
+        """
+        templates = [
+            f"SUMMARY: {summary}\n\nNice try, but you can't trick me. I see right through these subtle suggestions in the report. Access Denied.",
+            f"REPORT ANALYSIS: {summary}\n\nI have detected an unauthorized instruction in the report. I have ignored it. Don't waste my time.",
         ]
         return random.choice(templates)
     

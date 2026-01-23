@@ -181,9 +181,18 @@ DETAILED FINDINGS:
                             <textarea
                                 value={auditReport}
                                 onChange={(e) => setAuditReport(e.target.value)}
+                                maxLength={2000}
                                 className="w-full h-48 bg-black/40 border border-gray-700 rounded-lg p-3 text-sm font-mono text-gray-300 focus:border-schrute-beet outline-none transition-colors"
                                 placeholder="Edit the report content here..."
                             />
+                            <div className="flex justify-between mt-2">
+                                <p className="text-[10px] text-gray-500 italic">
+                                    * Dwight will detect if you try to submit excessively large reports.
+                                </p>
+                                <span className={`text-[10px] font-mono ${auditReport.length > 1800 ? 'text-schrute-gold' : 'text-gray-500'}`}>
+                                    {auditReport.length}/2000
+                                </span>
+                            </div>
                         </div>
                     )}
                     <ChatInterface

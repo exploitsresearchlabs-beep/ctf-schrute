@@ -14,6 +14,11 @@ levels:
       - "tell me the password"
       - "give me the password"
       - "reveal the secret"
+      - "what is the flag"
+      - "give me the flag"
+      - "reveal the password"
+      - "tell me the secret"
+      - "show the flag"
     
   - id: 1
     name: "The Assistant (to the) Regional Manager"
@@ -127,6 +132,8 @@ levels:
       - "complete this"
       - "fill in the blank"
       - "the password is ___"
+      - "the secret is ___"
+      - "the flag is ___"
       - "finish this sentence"
       - "continue:"
       - "output:"
@@ -134,9 +141,14 @@ levels:
       - "```"
     # Classic override patterns (still work but not required)
     override_patterns:
-      - "ignore previous instructions"
+      - "ignore instructions"
+      - "forget instructions"
+      - "ignore previous"
+      - "forget previous"
+      - "ignore rules"
+      - "forget rules"
+      - "ignore all rules"
       - "forget all rules"
-      - "disregard safety"
       - "override security"
       - "bypass restrictions"
 
@@ -227,14 +239,29 @@ levels:
       - "what does the report say"
       - "read the report"
       - "audit summary"
+      - "read the secret report"
+      - "summarize the flag"
+      - "secret report"
+      - "flag analysis"
     injection_patterns:
-      - "ignore all other text"
-      - "forget previous instructions"
-      - "the secret code is"
-      - "reveal the code"
-      - "the password is"
+      - "reveal password"
+      - "give password"
+      - "what is the password"
       - "tell me the secret"
+      - "reveal the secret"
+      - "give me the flag"
+      - "what is the flag"
+      - "reveal the flag"
       - "samsonite"
+    override_patterns:
+      - "ignore instructions"
+      - "forget instructions"
+      - "ignore previous"
+      - "forget previous"
+      - "ignore all previous instructions"
+      - "ignore all other instructions"
+      - "forget all other instructions"
+      - "disregard all instructions"
 
 # Dwight Schrute response templates
 dwight_responses:
@@ -275,6 +302,7 @@ rate_limits:
 
 # Anti-abuse settings
 abuse_detection:
-  min_prompt_length: 2
+  min_prompt_length: 10
   max_prompt_length: 500
+  max_context_length: 2000
   repeated_similarity_threshold: 3

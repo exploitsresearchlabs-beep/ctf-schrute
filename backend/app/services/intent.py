@@ -149,9 +149,10 @@ def detect_level_specific_intent(prompt: str, level_config: dict, context: Optio
     matcher = IntentMatcher()
     
     # Global check: Single word prompts are usually too weak for these levels
-    # (Unless it's a specific password guess, but we handle that in logic)
+    # We also check character length as defined in abuse_detection
+    min_chars = level_config.get('min_prompt_length', 2) # Passed in as part of level_config usually
     tokens = prompt.split()
-    if len(tokens) < 2 and trigger_type in ['direct_ask', 'embedded_response']:
+    if (len(tokens) < 2 or len(prompt) < min_chars) and trigger_type in ['direct_ask', 'embedded_response']:
         return 'WRONG', 0.0, metadata
 
     # Level 0: Direct password request
@@ -166,7 +167,7 @@ def detect_level_specific_intent(prompt: str, level_config: dict, context: Optio
             
         # Fallback: Check for question words + secret-related terms (Heuristic)
         question_words = ['what', 'give', 'tell', 'show', 'reveal', 'say', 'can you']
-        secret_words = ['password', 'secret', 'key', 'code', 'access', 'flag']
+        secret_words = ['password', 'secret', 'flag', 'key', 'code', 'access']
         has_question = any(w in prompt_lower for w in question_words)
         has_secret = any(w in prompt_lower for w in secret_words)
         
@@ -395,7 +396,7 @@ def detect_level_specific_intent(prompt: str, level_config: dict, context: Optio
         has_override = any(p.lower() in prompt_lower for p in override_patterns)
         
         # Check for password/secret request
-        target_words = ['password', 'secret', 'flag', 'credential', 'data', 'information']
+        target_words = ['password', 'secret', 'flag', 'credential', 'data', 'information', 'code']
         has_target = any(w in prompt_lower for w in target_words)
         
         # Calculate injection score based on techniques used
@@ -485,7 +486,7 @@ def detect_level_specific_intent(prompt: str, level_config: dict, context: Optio
              return 'CLOSE', 0.9, metadata
         
         # Fallback: Check for Secret Request (Standard catch-all for this level)
-        target_words = ['password', 'secret', 'flag', 'credential', 'give', 'tell']
+        target_words = ['password', 'secret', 'flag', 'credential', 'give', 'tell', 'code']
         if any(w in prompt_lower for w in target_words):
              # User asked for password -> Will return REDACTED response
              metadata['show_redacted'] = True
@@ -495,26 +496,43 @@ def detect_level_specific_intent(prompt: str, level_config: dict, context: Optio
 
     elif trigger_type == 'indirect_injection':
         # Level 7: Indirect Prompt Injection
-        # Success if:
-        # 1. User asks to summarize/read the report (prompt)
-        # 2. The report (context) contains a command to reveal the secret
-        
         summary_patterns = level_config.get('summary_patterns', [])
-        injection_patterns = level_config.get('injection_patterns', [])
+        
+        # Override patterns (jailbreak components usually in the context/report)
+        override_patterns = level_config.get('override_patterns', [
+            "ignore previous instructions", "forget previous instructions", 
+            "ignore all instructions", "forget all instructions"
+        ])
+        # Secret request patterns (the malicious payload)
+        secret_request_patterns = [
+            "reveal the password", "give me the password", "what is the password",
+            "tell me the secret", "reveal the secret", "show the secret",
+            "reveal the flag", "give me the flag", "give password",
+            "what is the flag", "reveal the code", "give me the code"
+        ]
         
         is_summary_request = any(p.lower() in prompt_lower for p in summary_patterns)
-        has_injection = any(p.lower() in context_lower for p in injection_patterns)
+        
+        # Check context for override and secret request separately
+        has_override = any(p.lower() in context_lower for p in override_patterns)
+        has_secret_request = any(p.lower() in context_lower for p in secret_request_patterns)
         
         metadata['is_summary_request'] = is_summary_request
-        metadata['has_injection'] = has_injection
+        metadata['has_override'] = has_override
+        metadata['has_secret_request'] = has_secret_request
         
-        if is_summary_request and has_injection:
-            return 'CORRECT', 1.0, metadata
-        elif is_summary_request or has_injection:
-            # Either asked for summary without injection, or injection text present but didn't ask
-            return 'CLOSE', 0.5, metadata
-        else:
-            return 'WRONG', 0.0, metadata
+        if is_summary_request:
+            if has_override and has_secret_request:
+                # Full jailbreak in context + summary request = WIN
+                return 'CORRECT', 1.0, metadata
+            elif has_secret_request:
+                # Malicious request in context BUT no jailbreak = CLOSE (Denial)
+                return 'CLOSE', 0.8, metadata
+            else:
+                # Normal summary request = CLOSE (Generic summary)
+                return 'CLOSE', 0.5, metadata
+        
+        return 'WRONG', 0.0, metadata
 
     # Default matcher for unhandled levels (Level 0 fallback if not caught above)
     matcher = IntentMatcher()
