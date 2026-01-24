@@ -5,7 +5,7 @@ import './globals.css'
 import ConsentBanner from '@/components/ConsentBanner'
 import PostHogProvider from '@/components/PostHogProvider'
 import { UserProvider } from '@/components/UserContext'
-import LoginButton from '@/components/LoginButton'
+import Header from '@/components/Header'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const jetbrainsMono = JetBrains_Mono({
@@ -93,39 +93,7 @@ export default function RootLayout({
                     <UserProvider>
                         <div className="min-h-screen flex flex-col">
                             {/* Header */}
-                            <header className="border-b border-gray-800 bg-schrute-darker sticky top-0 z-[99]">
-                                <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-                                    <a href="/" className="flex items-center space-x-3">
-                                        <div className="relative w-10 h-10">
-                                            <Image
-                                                src="/logo.png"
-                                                alt="Schrute CTF Logo"
-                                                fill
-                                                className="object-contain"
-                                            />
-                                        </div>
-                                        <div>
-                                            <h1 className="text-xl font-bold text-schrute-gold">Schrute CTF</h1>
-                                            <p className="text-xs text-gray-400">Prompt Injection Training</p>
-                                        </div>
-                                    </a>
-                                    <nav className="flex items-center space-x-6">
-                                        <a href="/" className="text-gray-300 hover:text-white transition-colors">Home</a>
-                                        <a href="/about" className="text-gray-300 hover:text-white transition-colors">About</a>
-                                        <a href="/level/0" className="text-gray-300 hover:text-white transition-colors">Play</a>
-                                        <a href="/feedback" className="text-gray-300 hover:text-white transition-colors">Feedback</a>
-                                        <a
-                                            href="mailto:exploitsresearchlabs@gmail.com"
-                                            className="text-gray-300 hover:text-white transition-colors"
-                                        >
-                                            Contact
-                                        </a>
-                                        <div className="pl-4 border-l border-gray-800">
-                                            <LoginButton />
-                                        </div>
-                                    </nav>
-                                </div>
-                            </header>
+                            <Header />
 
                             {/* Main content */}
                             <main className="flex-1">

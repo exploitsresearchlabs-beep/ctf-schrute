@@ -36,23 +36,23 @@ export default function ConsentBanner() {
 
     return (
         <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-schrute-darker/95 border-t border-gray-800 backdrop-blur-sm">
-            <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-sm text-gray-300">
+            <div className="container mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="text-sm text-gray-300 text-center md:text-left">
                     <p>
                         🍪 We use analytics cookies to improve your experience.{' '}
-                        <span className="text-gray-400">No personal information is collected during gameplay.</span>
+                        <span className="text-gray-400 block sm:inline">No personal information is collected during gameplay.</span>
                     </p>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-3 w-full md:w-auto justify-center md:justify-end">
                     <button
                         onClick={handleDecline}
-                        className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors"
+                        className="flex-1 md:flex-none px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors border border-gray-800 rounded-lg hover:bg-gray-800"
                     >
                         Decline
                     </button>
                     <button
                         onClick={handleAccept}
-                        className="px-4 py-2 text-sm bg-schrute-beet text-white rounded-lg hover:bg-red-700 transition-colors"
+                        className="flex-1 md:flex-none px-4 py-2 text-sm bg-schrute-beet text-white rounded-lg hover:bg-red-700 transition-colors"
                     >
                         Accept
                     </button>
