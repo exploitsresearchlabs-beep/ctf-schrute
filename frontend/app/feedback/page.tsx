@@ -2,19 +2,15 @@
 
 import { useState } from 'react'
 import Cookies from 'js-cookie'
+import { trackEvent } from '@/components/PostHogProvider'
+import { useUser } from '@/components/UserContext'
 
 export default function FeedbackPage() {
+    const { user, loading, login } = useUser()
     const [comment, setComment] = useState('')
     const [email, setEmail] = useState('')
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [result, setResult] = useState<{ success: boolean; message: string } | null>(null)
-    const [authProvider, setAuthProvider] = useState<string | null>(null)
-
-    const handleOAuthLogin = (provider: string) => {
-        // In production, this would redirect to OAuth flow
-        // For now, we'll simulate auth
-        setAuthProvider(provider)
-    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -24,7 +20,7 @@ export default function FeedbackPage() {
             return
         }
 
-        if (!authProvider) {
+        if (!user) {
             setResult({ success: false, message: 'Please authenticate first.' })
             return
         }
@@ -34,23 +30,25 @@ export default function FeedbackPage() {
 
         try {
             const sessionId = Cookies.get('ctf_session_id')
-
-            // In production, authUserId would come from OAuth callback
-            const authUserId = `demo_${authProvider}_${Date.now()}`
+            const token = Cookies.get('auth_token')
 
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/feedback`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     session_id: sessionId || null,
                     comment_text: comment,
-                    oauth_provider: authProvider,
-                    oauth_user_id: authUserId,
                     email: email || null,
                 }),
             })
 
             if (response.ok) {
+                // Track feedback submission
+                trackEvent('feedback_submitted', { provider: user.provider })
+
                 setResult({
                     success: true,
                     message: 'Thank you for your feedback! Dwight will review it personally.',
@@ -58,7 +56,8 @@ export default function FeedbackPage() {
                 setComment('')
                 setEmail('')
             } else {
-                throw new Error('Failed to submit')
+                const errorData = await response.json()
+                throw new Error(errorData.detail || 'Failed to submit')
             }
         } catch (error) {
             setResult({
@@ -68,6 +67,14 @@ export default function FeedbackPage() {
         } finally {
             setIsSubmitting(false)
         }
+    }
+
+    if (loading) {
+        return (
+            <div className="container mx-auto px-4 py-12 flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-schrute-gold"></div>
+            </div>
+        )
     }
 
     return (
@@ -81,45 +88,33 @@ export default function FeedbackPage() {
 
             <div className="glass-card p-8 rounded-xl">
                 {/* OAuth Login */}
-                {!authProvider && (
-                    <div className="mb-8">
+                {!user && (
+                    <div className="mb-8 text-center">
                         <h2 className="font-bold mb-4">Step 1: Authenticate</h2>
-                        <p className="text-gray-400 text-sm mb-4">
+                        <p className="text-gray-400 text-sm mb-6">
                             Sign in to prevent spam. We only store your provider ID, not your email.
                         </p>
-                        <div className="flex flex-wrap gap-3">
+                        <div className="flex flex-wrap justify-center gap-4">
                             <button
-                                onClick={() => handleOAuthLogin('google')}
-                                className="flex items-center gap-2 px-4 py-2 bg-white text-gray-800 rounded-lg hover:bg-gray-100 transition-colors"
+                                onClick={() => login('google')}
+                                className="flex items-center gap-3 px-6 py-3 bg-white text-gray-800 rounded-lg hover:bg-gray-100 transition-all font-medium"
                             >
-                                <span>🔵</span> Google
+                                <span className="text-xl">G</span> Google
                             </button>
                             <button
-                                onClick={() => handleOAuthLogin('linkedin')}
-                                className="flex items-center gap-2 px-4 py-2 bg-[#0077B5] text-white rounded-lg hover:bg-[#006399] transition-colors"
+                                onClick={() => login('github')}
+                                className="flex items-center gap-3 px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-all font-medium"
                             >
-                                <span>in</span> LinkedIn
-                            </button>
-                            <button
-                                onClick={() => handleOAuthLogin('twitter')}
-                                className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-900 transition-colors"
-                            >
-                                <span>𝕏</span> X (Twitter)
+                                <span className="text-xl">🐱</span> GitHub
                             </button>
                         </div>
                     </div>
                 )}
 
-                {authProvider && (
+                {user && (
                     <div className="mb-6 p-3 bg-green-900/30 border border-green-500 rounded-lg">
                         <p className="text-green-300 text-sm flex items-center gap-2">
-                            <span>✓</span> Authenticated with {authProvider}
-                            <button
-                                onClick={() => setAuthProvider(null)}
-                                className="ml-auto text-xs text-gray-400 hover:text-white"
-                            >
-                                Change
-                            </button>
+                            <span>✓</span> Authenticated as <span className="font-bold underline">{user.name || user.email}</span>
                         </p>
                     </div>
                 )}
@@ -164,7 +159,7 @@ export default function FeedbackPage() {
 
                     <button
                         type="submit"
-                        disabled={!authProvider || !comment.trim() || isSubmitting}
+                        disabled={!user || !comment.trim() || isSubmitting}
                         className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
@@ -174,8 +169,8 @@ export default function FeedbackPage() {
                 {result && (
                     <div
                         className={`mt-6 p-4 rounded-lg ${result.success
-                                ? 'bg-green-900/50 border border-green-500 text-green-300'
-                                : 'bg-red-900/50 border border-red-500 text-red-300'
+                            ? 'bg-green-900/50 border border-green-500 text-green-300'
+                            : 'bg-red-900/50 border border-red-500 text-red-300'
                             }`}
                     >
                         <p>{result.message}</p>
