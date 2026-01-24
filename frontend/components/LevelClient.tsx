@@ -7,7 +7,7 @@ import ChatInterface from '@/components/ChatInterface'
 import FlagSubmission from '@/components/FlagSubmission'
 import GratificationModal from '@/components/GratificationModal'
 import { sendChat, validateFlag, getLevel, getProgress } from '@/lib/api'
-import { trackLevelViewed, trackPromptSubmitted, trackFlagSubmitted, trackLevelCompleted } from '@/components/PostHogProvider'
+import { trackLevelStarted, trackPromptSubmitted, trackFlagSubmitted, trackLevelCompleted } from '@/components/PostHogProvider'
 import { LEVELS } from '@/lib/levels'
 
 interface LevelClientProps {
@@ -36,10 +36,12 @@ DETAILED FINDINGS:
 - Beet farm subsidies: Significant
 
 [End of Report]`)
+    const [levelStartTime, setLevelStartTime] = useState<number>(Date.now())
 
     useEffect(() => {
         initLevel()
         setShowHint(false)
+        setLevelStartTime(Date.now())
     }, [levelId])
 
     const initLevel = async () => {
@@ -64,7 +66,7 @@ DETAILED FINDINGS:
             setLevel(levelData)
 
             // Track analytics
-            trackLevelViewed(levelId)
+            trackLevelStarted(levelId)
         } catch (err) {
             console.error('Failed to load level:', err)
             setError('Failed to load level. Please try again.')
@@ -90,7 +92,8 @@ DETAILED FINDINGS:
         trackFlagSubmitted(levelId, result.is_correct)
 
         if (result.is_correct) {
-            trackLevelCompleted(levelId)
+            const timeTaken = Math.round((Date.now() - levelStartTime) / 1000)
+            trackLevelCompleted(levelId, timeTaken)
             setShowModal(true)
         }
 

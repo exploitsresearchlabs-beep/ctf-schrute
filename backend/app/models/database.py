@@ -18,9 +18,25 @@ class Settings(BaseSettings):
     secret_key: str = "dwight-schrute-assistant-to-the-regional-manager-secret-key"
     posthog_api_key: Optional[str] = None
     posthog_host: str = "https://app.posthog.com"
+    debug: bool = False
+    cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
     
-    class Config:
-        env_file = ".env"
+    # OAuth
+    github_client_id: Optional[str] = None
+    github_client_secret: Optional[str] = None
+    google_client_id: Optional[str] = None
+    google_client_secret: Optional[str] = None
+    frontend_url: str = "http://localhost:3000"
+    
+    @property
+    def cors_origins_list(self) -> list[str]:
+        # Split by comma and strip whitespace
+        origins = [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+        # Also include the frontend_url if it's not already there
+        if self.frontend_url not in origins:
+            origins.append(self.frontend_url)
+        # Ensure no trailing slashes in the origin (CORSMiddleware is sensitive)
+        return [origin.rstrip("/") for origin in origins]
 
 
 settings = Settings()
@@ -31,6 +47,28 @@ class Base(DeclarativeBase):
     pass
 
 
+class User(Base):
+    """
+    Authenticated user model.
+    """
+    __tablename__ = "users"
+    
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    provider = Column(String(20), nullable=False)  # google, github, etc.
+    provider_user_id = Column(String(100), nullable=False)
+    name = Column(String(100), nullable=True)
+    email = Column(String(255), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    sessions = relationship("GameplaySession", back_populates="user")
+    feedback = relationship("Feedback", back_populates="user")
+    
+    __table_args__ = (
+        Index('idx_user_provider', 'provider', 'provider_user_id', unique=True),
+    )
+
+
 class GameplaySession(Base):
     """
     Tracks anonymous user sessions.
@@ -39,6 +77,7 @@ class GameplaySession(Base):
     __tablename__ = "gameplay_sessions"
     
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey("users.id"), nullable=True) # Optional link to registered user
     created_at = Column(DateTime, default=datetime.utcnow)
     last_active = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     current_level = Column(Integer, default=0)
@@ -46,6 +85,7 @@ class GameplaySession(Base):
     posthog_distinct_id = Column(String(100), nullable=True)
     
     # Relationships
+    user = relationship("User", back_populates="sessions")
     prompt_logs = relationship("PromptLog", back_populates="session")
     
     __table_args__ = (
@@ -87,11 +127,15 @@ class Feedback(Base):
     
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     session_id = Column(String(36), nullable=True)  # Optional link to gameplay
+    user_id = Column(String(36), ForeignKey("users.id"), nullable=True)
     comment_text = Column(Text, nullable=False)
     oauth_provider = Column(String(20), nullable=False)  # google, linkedin, twitter
     oauth_user_id = Column(String(100), nullable=False)  # Unique ID from OAuth
     email = Column(String(255), nullable=True)  # Optional email
     timestamp = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    user = relationship("User", back_populates="feedback")
     
     __table_args__ = (
         Index('idx_feedback_timestamp', 'timestamp'),
@@ -112,14 +156,55 @@ class FlagSubmission(Base):
     __table_args__ = (
         Index('idx_flag_session_level', 'session_id', 'level_id'),
         Index('idx_flag_timestamp', 'timestamp'),
+        Index('idx_flag_correct', 'is_correct'),
     )
 
 
-# Database engine and session factory
-engine = create_async_engine(
-    settings.database_url,
-    echo=False,  # Set to True for SQL debugging
-)
+class DailyStats(Base):
+    """
+    Caches daily statistics for the leaderboard.
+    Calculated from GameplaySession and FlagSubmission.
+    """
+    __tablename__ = "daily_stats"
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    date = Column(DateTime, nullable=False, default=datetime.utcnow)
+    total_players = Column(Integer, default=0)
+    total_flags_captured = Column(Integer, default=0)
+    level_0_completions = Column(Integer, default=0)
+    level_1_completions = Column(Integer, default=0)
+    level_2_completions = Column(Integer, default=0)
+    level_3_completions = Column(Integer, default=0)
+    level_4_completions = Column(Integer, default=0)
+    level_5_completions = Column(Integer, default=0)
+    level_6_completions = Column(Integer, default=0)
+    level_7_completions = Column(Integer, default=0)
+    
+    __table_args__ = (
+        Index('idx_stats_date', 'date', unique=True),
+    )
+
+
+# Database engine configuration
+def create_app_engine():
+    db_url = settings.database_url
+    connect_args = {}
+    
+    # Neon and other providers require SSL. asyncpg doesn't support 'sslmode' in the URL.
+    # We strip all query params for PostgreSQL and enable SSL via connect_args.
+    if "postgresql" in db_url:
+        if "?" in db_url:
+            db_url = db_url.split("?")[0]
+        # 'ssl' can be True, or the string "require" depending on the SQLAlchemy version/driver combo
+        connect_args["ssl"] = True
+        
+    return create_async_engine(
+        db_url,
+        echo=False,
+        connect_args=connect_args
+    )
+
+engine = create_app_engine()
 
 async_session_factory = async_sessionmaker(
     engine,

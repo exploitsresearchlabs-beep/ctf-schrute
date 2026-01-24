@@ -51,11 +51,11 @@ Final steps before going live.
   - Use `docker-compose.yml` for local production testing.
 - **CI/CD Pipeline**:
   - Set up **GitHub Actions** to run `simulate_prompts.py` on every PR.
-  - Automate deployments to Vercel (Frontend) and Railway/Fly.io (Backend).
+  - Automate deployments to Vercel (Frontend) and **Google Cloud Run** (Backend).
 - **Production Checklist**:
   - [ ] Set `DEBUG=False` in backend.
   - [ ] Configure `CORS_ORIGINS` to only allow the production domain.
-  - [ ] Set up an SSL certificate (standard with Vercel/Railway).
+  - [ ] Set up an SSL certificate (standard with Vercel/Cloud Run).
   - [ ] Generate a strong `SECRET_KEY`.
 
 ---

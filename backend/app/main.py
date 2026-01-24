@@ -12,8 +12,8 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
-from .models.database import init_db
-from .routers import chat, flags, session, feedback
+from .models.database import init_db, settings
+from .routers import chat, flags, session, feedback, auth
 
 
 # Rate limiter setup
@@ -23,8 +23,9 @@ limiter = Limiter(key_func=get_remote_address)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan - initialize and cleanup."""
-    # Startup: Initialize database
-    await init_db()
+    # Note: init_db() removed in favor of Alembic migrations
+    if settings.debug:
+        print(f"DEBUG: Allowed CORS origins: {settings.cors_origins_list}")
     print("🥬 Schrute CTF Bot initialized. Bears. Beets. Battlestar Galactica.")
     yield
     # Shutdown
@@ -52,11 +53,7 @@ app = FastAPI(
 # Configure CORS for frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "https://*.vercel.app",
-    ],
+    allow_origins=settings.cors_origins_list,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -65,6 +62,10 @@ app.add_middleware(
 # Add rate limiter
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+# OAuth session middleware (required by Authlib for state/nonce)
+from starlette.middleware.sessions import SessionMiddleware
+app.add_middleware(SessionMiddleware, secret_key=settings.secret_key)
 
 
 # Custom rate limit handler with Dwight response
@@ -86,6 +87,7 @@ app.include_router(chat.router)
 app.include_router(flags.router)
 app.include_router(session.router)
 app.include_router(feedback.router)
+app.include_router(auth.router)
 
 
 @app.get("/")
