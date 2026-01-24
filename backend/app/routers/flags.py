@@ -76,6 +76,12 @@ async def validate_flag(
     level_id = body.level_id
     submitted_flag = body.flag.strip()
     
+    # Verify session exists (to avoid FK violation)
+    stmt = select(GameplaySession).where(GameplaySession.id == session_id)
+    result = await db.execute(stmt)
+    if not result.scalar_one_or_none():
+        raise HTTPException(status_code=404, detail="Session not found or expired")
+    
     # Check rate limit
     if await check_flag_rate_limit(session_id, level_id, db):
         return FlagSubmissionResponse(

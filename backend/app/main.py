@@ -24,8 +24,7 @@ limiter = Limiter(key_func=get_remote_address)
 async def lifespan(app: FastAPI):
     """Application lifespan - initialize and cleanup."""
     # Note: init_db() removed in favor of Alembic migrations
-    if settings.debug:
-        print(f"DEBUG: Allowed CORS origins: {settings.cors_origins_list}")
+    print(f"INFO: Allowed CORS origins: {settings.cors_origins_list}")
     print("🥬 Schrute CTF Bot initialized. Bears. Beets. Battlestar Galactica.")
     yield
     # Shutdown

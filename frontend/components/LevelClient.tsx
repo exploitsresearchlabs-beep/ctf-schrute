@@ -54,8 +54,15 @@ DETAILED FINDINGS:
             }
             setSessionId(session)
 
-            // Check if level is unlocked
+            // Verify session exists in DB and get progress
             const progress = await getProgress(session)
+            if (!progress.exists) {
+                // Stale session, clear cookie and redirect to home for re-init
+                Cookies.remove('ctf_session_id')
+                router.push('/')
+                return
+            }
+
             if (levelId > progress.current_level && !progress.completed_levels.includes(levelId)) {
                 setError(`Level ${levelId} is locked. Complete previous levels first!`)
                 return

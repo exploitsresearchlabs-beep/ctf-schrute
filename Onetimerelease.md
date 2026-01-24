@@ -34,23 +34,26 @@ You need to register the application with GitHub and Google to enable social log
 The production environment requires a managed PostgreSQL instance. We will implement **Principle of Least Privilege** (PoLP) by separating the "Migration/Admin" role from the "App" role.
 
 1. **Create Project**: Go to [Neon](https://neon.tech/) and create a new project.
-2. **Setup Roles**: In the Neon SQL Editor, run the following to create a restricted application user:
+2. **Setup Roles**: In the Neon SQL Editor, run the following (as the admin/owner) to create a restricted application user:
    ```sql
-   -- 1. Create the application user (if not done via UI)
+   -- 1. Create the application user
    CREATE USER ctf_app_user WITH PASSWORD 'your_secure_password';
 
-   -- 2. Grant basic access to the schema
+   -- 2. Grant access to all CURRENT tables and sequences
    GRANT USAGE ON SCHEMA public TO ctf_app_user;
-   GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO ctf_app_user;
+   GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO ctf_app_user;
+   GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO ctf_app_user;
 
-   -- 3. APPLY RESTRICTION: Revoke Read/Update/Delete on sensitive logs
+   -- 3. APPLY RESTRICTION: Sensitive logs
+   -- Note: SELECT is required for the app's internal brute-force/similarity detection.
    REVOKE ALL ON TABLE prompt_logs FROM ctf_app_user;
-   GRANT INSERT ON TABLE prompt_logs TO ctf_app_user;
+   GRANT INSERT, SELECT ON TABLE prompt_logs TO ctf_app_user;
 
-   -- 4. Future tables: Ensure app user can access future tables (optional if migrations run as owner)
-   ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO ctf_app_user;
-   ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON TABLES FROM ctf_app_user; -- Manual tweak needed per table if new logs added
+   -- 4. ENSURE FUTURE TABLES: Automatically grant access to tables created by migrations later
+   ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON TABLES TO ctf_app_user;
+   ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON SEQUENCES TO ctf_app_user;
    ```
+   *Note: If you already ran migrations and get "permission denied", rerun steps 2 and 3 above.*
 3. **Admin User**: Your default project owner (e.g., `alex`) will serve as the "Admin" who can read all logs.
 4. **Connection Strings**:
    - **Admin/Migration URL**: `postgresql+asyncpg://owner_user:pass@host/dbname` (Use this for `alembic` migrations).
@@ -84,12 +87,15 @@ Google Cloud Run is a managed compute platform that automatically scales your st
    For production security, use the following to update your secrets:
    ```bash
    gcloud run services update schrute-ctf-api \
+     --region us-central1 \
      --set-env-vars="DATABASE_URL=your_neon_app_url" \
      --set-env-vars="SECRET_KEY=your_random_hex" \
      --set-env-vars="GITHUB_CLIENT_ID=xxx,GITHUB_CLIENT_SECRET=xxx" \
      --set-env-vars="GOOGLE_CLIENT_ID=xxx,GOOGLE_CLIENT_SECRET=xxx" \
-     --set-env-vars="CORS_ORIGINS=https://your-frontend.vercel.app"
+     --set-env-vars="CORS_ORIGINS=https://domain1.com;https://domain2.com" \
+     --set-env-vars="FRONTEND_URL=https://main-domain.com"
    ```
+   *Note: For **CORS_ORIGINS**, I recommend using a **semicolon** (`;`) to separate domains. This avoids `gcloud` syntax errors with commas.*
 
 5. **Final URL**: After deployment, gcloud will provide a Service URL like `https://schrute-ctf-api-xxxx.a.run.app`. This is your `NEXT_PUBLIC_API_URL`.
 
