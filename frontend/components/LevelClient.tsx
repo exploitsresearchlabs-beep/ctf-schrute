@@ -21,6 +21,7 @@ export default function LevelClient({ levelId }: LevelClientProps) {
     const [level, setLevel] = useState<any>(null)
     const [showHint, setShowHint] = useState(false)
     const [showModal, setShowModal] = useState(false)
+    const [isCompleted, setIsCompleted] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [auditReport, setAuditReport] = useState(`AUDIT REPORT - QUARTER 4
@@ -71,6 +72,7 @@ DETAILED FINDINGS:
             // Get level info
             const levelData = await getLevel(levelId)
             setLevel(levelData)
+            setIsCompleted(progress.completed_levels.includes(levelId))
 
             // Track analytics
             trackLevelStarted(levelId)
@@ -101,6 +103,7 @@ DETAILED FINDINGS:
         if (result.is_correct) {
             const timeTaken = Math.round((Date.now() - levelStartTime) / 1000)
             trackLevelCompleted(levelId, timeTaken)
+            setIsCompleted(true)
             setShowModal(true)
         }
 
@@ -153,10 +156,23 @@ DETAILED FINDINGS:
                     </div>
                 </div>
 
-                {/* Security Lesson Badge */}
-                <div className="inline-flex items-center gap-2 bg-schrute-darker px-4 py-2 rounded-lg">
-                    <span className="text-schrute-gold">🔐 Security Lesson:</span>
-                    <span className="text-gray-300 text-sm">{level?.security_lesson}</span>
+                <div className="flex flex-wrap items-center gap-4 mb-4">
+                    {/* Security Lesson Badge */}
+                    <div className="inline-flex items-center gap-2 bg-schrute-darker px-4 py-2 rounded-lg">
+                        <span className="text-schrute-gold">🔐 Security Lesson:</span>
+                        <span className="text-gray-300 text-sm">{level?.security_lesson}</span>
+                    </div>
+
+                    {/* Share Button (Only if completed) */}
+                    {isCompleted && (
+                        <button
+                            onClick={() => setShowModal(true)}
+                            className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-white/10"
+                        >
+                            <span>Share Achievement</span>
+                            <span>🏆</span>
+                        </button>
+                    )}
                 </div>
             </div>
 

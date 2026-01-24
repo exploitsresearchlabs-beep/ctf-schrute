@@ -5,14 +5,16 @@ import { getLevelById } from '@/lib/levels'
 
 interface Props {
     params: { id: string }
+    searchParams: { completed?: string }
 }
 
 export async function generateMetadata(
-    { params }: Props,
+    { params, searchParams }: Props,
     parent: ResolvingMetadata
 ): Promise<Metadata> {
     const id = parseInt(params.id)
     const level = getLevelById(id)
+    const isCompleted = searchParams.completed === 'true'
 
     if (!level) {
         return {
@@ -20,12 +22,22 @@ export async function generateMetadata(
         }
     }
 
+    const title = isCompleted
+        ? `🏆 Level ${level.id} Completed! - Schrute CTF`
+        : `Level ${level.id}: ${level.name} - Schrute CTF`
+
+    const description = isCompleted
+        ? `I just beat Level ${level.id}: ${level.name} in Schrute CTF! Learned about ${level.security_lesson}. Can you outsmart Dwight?`
+        : `Schrute CTF Level ${level.id} - ${level.name}. Learn about ${level.security_lesson}. ${level.description}`
+
     return {
-        title: `Level ${level.id}: ${level.name} - Schrute CTF`,
-        description: `Schrute CTF Level ${level.id} - ${level.name}. Learn about ${level.security_lesson}. ${level.description}`,
+        title,
+        description,
         openGraph: {
-            title: `Can you beat Level ${level.id}: ${level.name}?`,
-            description: `Test your skills against Dwight in Level ${level.id}. Learn about ${level.security_lesson}.`,
+            title,
+            description,
+            url: `https://ctf.exploitsresearchlabs.com/level/${level.id}${isCompleted ? '?completed=true' : ''}`,
+            images: ['/og-image.png'], // Add explicitly to ensure it shows up
         }
     }
 }

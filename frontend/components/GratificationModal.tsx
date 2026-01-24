@@ -52,19 +52,23 @@ export default function GratificationModal({
     }
 
     const shareText = `🎉 I just completed Level ${levelId}: "${levelNames[levelId]}" in Schrute CTF!\n\nLearned about: ${securityLessons[levelId]}\n\nCan you outsmart Dwight? 🥬\n\n`
-    const shareUrl = typeof window !== 'undefined' ? window.location.origin : ''
+
+    // Use level-specific URL with completed=true for dynamic OG tags
+    const shareUrl = typeof window !== 'undefined'
+        ? `${window.location.origin}/level/${levelId}?completed=true`
+        : ''
 
     const shareLinks = {
-        linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}&summary=${encodeURIComponent(shareText)}`,
+        linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
         twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
-        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`,
-        whatsapp: `https://wa.me/?text=${encodeURIComponent(shareText + shareUrl)}`,
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
+        whatsapp: `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`,
     }
 
     return (
         <div className="modal-overlay" onClick={onClose}>
             <div
-                className="glass-card p-8 rounded-2xl max-w-lg w-full mx-4 animate-slide-up relative overflow-hidden"
+                className="glass-card p-6 md:p-8 rounded-2xl max-w-lg w-full mx-4 animate-slide-up relative overflow-y-auto max-h-[90vh]"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Confetti Effect */}
