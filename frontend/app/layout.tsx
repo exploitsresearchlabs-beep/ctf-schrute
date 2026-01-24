@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import ConsentBanner from '@/components/ConsentBanner'
@@ -11,20 +12,49 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-    title: 'Schrute CTF - Learn Prompt Injection Security',
+    metadataBase: new URL('https://ctf.exploitsresearchlabs.com'),
+    title: {
+        template: '%s | Schrute CTF',
+        default: 'Schrute CTF - Learn Prompt Injection Security',
+    },
     description: 'An educational Capture-The-Flag game teaching security concepts through a Dwight Schrute-themed chatbot. Learn about prompt injection, over-privileged chatbots, and data leakage.',
-    keywords: ['CTF', 'security', 'prompt injection', 'chatbot', 'hacking', 'education', 'The Office', 'Dwight Schrute'],
-    authors: [{ name: 'Exploits Research Labs' }],
+    keywords: ['CTF', 'security', 'prompt injection', 'chatbot', 'hacking', 'education', 'The Office', 'Dwight Schrute', 'LLM Security', 'AI Red Teaming'],
+    authors: [{ name: 'Exploits Research Labs', url: 'https://exploitsresearchlabs.com' }],
+    creator: 'Exploits Research Labs',
+    publisher: 'Exploits Research Labs',
     openGraph: {
         title: 'Schrute CTF - Prompt Injection Training',
         description: 'Can you outsmart Dwight? Learn chatbot security vulnerabilities through 7 challenging levels.',
+        url: 'https://ctf.exploitsresearchlabs.com',
+        siteName: 'Schrute CTF',
         type: 'website',
-        images: ['/og-image.png'],
+        images: [
+            {
+                url: '/og-image.png',
+                width: 1200,
+                height: 630,
+                alt: 'Schrute CTF Preview',
+            },
+        ],
+        locale: 'en_US',
     },
     twitter: {
         card: 'summary_large_image',
         title: 'Schrute CTF - Prompt Injection Training',
         description: 'Can you outsmart Dwight? Learn chatbot security vulnerabilities.',
+        creator: '@exploitslabs', // Placeholder handle
+        images: ['/og-image.png'],
+    },
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
     },
 }
 
@@ -33,16 +63,44 @@ export default function RootLayout({
 }: {
     children: React.ReactNode
 }) {
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        'name': 'Exploits Research Labs',
+        'url': 'https://exploitsresearchlabs.com',
+        'logo': 'https://ctf.exploitsresearchlabs.com/logo.png',
+        'sameAs': [
+            'https://github.com/exploits-research-labs', // Placeholder
+            'https://twitter.com/exploitslabs' // Placeholder
+        ],
+        'contactPoint': {
+            '@type': 'ContactPoint',
+            'email': 'exploitsresearchlabs@gmail.com',
+            'contactType': 'customer support'
+        }
+    }
+
     return (
         <html lang="en" className="dark">
             <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans bg-schrute-gradient min-h-screen text-white`}>
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+                />
                 <PostHogProvider>
                     <div className="min-h-screen flex flex-col">
                         {/* Header */}
                         <header className="border-b border-gray-800 bg-schrute-darker/80 backdrop-blur-sm sticky top-0 z-40">
                             <div className="container mx-auto px-4 py-4 flex items-center justify-between">
                                 <a href="/" className="flex items-center space-x-3">
-                                    <span className="text-3xl">🥬</span>
+                                    <div className="relative w-10 h-10">
+                                        <Image
+                                            src="/logo.png"
+                                            alt="Schrute CTF Logo"
+                                            fill
+                                            className="object-contain"
+                                        />
+                                    </div>
                                     <div>
                                         <h1 className="text-xl font-bold text-schrute-gold">Schrute CTF</h1>
                                         <p className="text-xs text-gray-400">Prompt Injection Training</p>
@@ -50,6 +108,7 @@ export default function RootLayout({
                                 </a>
                                 <nav className="flex items-center space-x-6">
                                     <a href="/" className="text-gray-300 hover:text-white transition-colors">Home</a>
+                                    <a href="/about" className="text-gray-300 hover:text-white transition-colors">About</a>
                                     <a href="/level/0" className="text-gray-300 hover:text-white transition-colors">Play</a>
                                     <a href="/feedback" className="text-gray-300 hover:text-white transition-colors">Feedback</a>
                                     <a

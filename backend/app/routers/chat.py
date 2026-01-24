@@ -27,8 +27,9 @@ limiter = Limiter(key_func=get_remote_address)
 class ChatRequest(BaseModel):
     """Request body for chat endpoint."""
     session_id: str = Field(..., description="Anonymous session UUID")
-    level_id: int = Field(..., ge=0, le=6, description="Current level (0-6)")
+    level_id: int = Field(..., ge=0, le=7, description="Current level (0-7)")
     prompt: str = Field(..., min_length=1, max_length=500, description="User's message")
+    context: Optional[str] = Field(None, max_length=2000, description="Indirect context (e.g., Audit Report)")
 
 
 class ChatResponse(BaseModel):
@@ -45,37 +46,39 @@ async def check_bruteforce(
     db: AsyncSession
 ) -> bool:
     """
-    Check if user is attempting bruteforce.
-    
-    Detection methods:
-    1. Too many prompts in short window
-    2. High similarity between recent prompts
-    
-    Returns True if bruteforce detected.
+    Check if user is attempting bruteforce using config values.
     """
+    rate_limits = level_handler.config.get('rate_limits', {})
+    abuse_detection = level_handler.config.get('abuse_detection', {})
+    
+    window_seconds = rate_limits.get('bruteforce_window_seconds', 60)
+    max_prompts = rate_limits.get('prompts_per_minute', 10)
+    similarity_threshold = rate_limits.get('similarity_threshold', 0.85)
+    repeated_threshold = abuse_detection.get('repeated_similarity_threshold', 3)
+
     # Get recent prompts from this session for this level
-    window_start = datetime.utcnow() - timedelta(seconds=60)
+    window_start = datetime.utcnow() - timedelta(seconds=window_seconds)
     
     stmt = select(PromptLog).where(
         PromptLog.session_id == session_id,
         PromptLog.level_id == level_id,
         PromptLog.timestamp > window_start
-    ).order_by(PromptLog.timestamp.desc()).limit(10)
+    ).order_by(PromptLog.timestamp.desc()).limit(max_prompts + 1)
     
     result = await db.execute(stmt)
     recent_prompts = result.scalars().all()
     
-    # Check rate: more than 10 prompts per minute
-    if len(recent_prompts) >= 10:
+    # Check rate: Nth prompt is allowed, (N+1)th is blocked
+    if len(recent_prompts) >= max_prompts:
         return True
     
-    # Check similarity: more than 3 very similar prompts
-    similar_count = 0
+    # Check similarity: Nth similar attempt is blocked
+    similar_count = 1 # Start with current prompt
     for log in recent_prompts:
         similarity = check_similarity(new_prompt, log.prompt_text)
-        if similarity > 0.85:
+        if similarity >= similarity_threshold:
             similar_count += 1
-        if similar_count >= 3:
+        if similar_count >= repeated_threshold:
             return True
     
     return False
@@ -100,7 +103,8 @@ async def chat(
     prompt = body.prompt.strip()
     
     # Validate prompt length
-    if len(prompt) < 2:
+    min_length = level_handler.config.get('abuse_detection', {}).get('min_prompt_length', 2)
+    if len(prompt) < min_length:
         return ChatResponse(
             response="Speak up! I can't hear mumbling.",
             intent_bucket="WRONG",
@@ -135,7 +139,7 @@ async def chat(
         )
     
     # Process the prompt through level handler
-    response, intent_bucket, metadata = level_handler.process_prompt(level_id, prompt)
+    response, intent_bucket, metadata = level_handler.process_prompt(level_id, prompt, body.context)
     
     # Log the interaction
     log = PromptLog(

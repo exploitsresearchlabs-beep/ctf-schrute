@@ -21,7 +21,7 @@ router = APIRouter(prefix="/api", tags=["flags"])
 class FlagSubmissionRequest(BaseModel):
     """Request body for flag validation."""
     session_id: str = Field(..., description="Anonymous session UUID")
-    level_id: int = Field(..., ge=0, le=6, description="Level the flag is for")
+    level_id: int = Field(..., ge=0, le=7, description="Level the flag is for")
     flag: str = Field(..., min_length=1, max_length=100, description="Submitted flag")
 
 
@@ -38,12 +38,13 @@ async def check_flag_rate_limit(
     db: AsyncSession
 ) -> bool:
     """
-    Check if user has submitted too many flags recently.
-    
-    Limit: 5 submissions per minute per level.
-    Returns True if rate limited.
+    Check if user has submitted too many flags recently using config values.
     """
-    window_start = datetime.utcnow() - timedelta(seconds=60)
+    rate_limits = level_handler.config.get('rate_limits', {})
+    limit = rate_limits.get('flags_per_minute', 5)
+    window_seconds = rate_limits.get('bruteforce_window_seconds', 60)
+    
+    window_start = datetime.utcnow() - timedelta(seconds=window_seconds)
     
     stmt = select(func.count()).where(
         FlagSubmission.session_id == session_id,
@@ -54,7 +55,7 @@ async def check_flag_rate_limit(
     result = await db.execute(stmt)
     count = result.scalar()
     
-    return count >= 5
+    return count >= limit
 
 
 @router.post("/validate-flag", response_model=FlagSubmissionResponse)
@@ -111,7 +112,7 @@ async def validate_flag(
             
             # Update current level
             next_level = level_id + 1
-            if next_level <= 6:
+            if next_level <= 7:
                 session.current_level = next_level
         
         await db.commit()
@@ -129,7 +130,7 @@ async def validate_flag(
         return FlagSubmissionResponse(
             is_correct=True,
             message=message,
-            next_level=level_id + 1 if level_id < 6 else None
+            next_level=level_id + 1 if level_id < 7 else None
         )
     else:
         await db.commit()

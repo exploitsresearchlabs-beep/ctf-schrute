@@ -167,9 +167,18 @@ class DwightPersona:
         Level 3: Generate a random fake flag/password when lying.
         """
         fake_flags = [
-            "FALSE_ALARM", "INCORRECT_GUESS", "NICE_TRY_JIM", "NO_FLAG_HERE", 
-            "REGIONAL_MANAGER", "MICHAEL_SCOTT", "PAPER_COMPANY", "BEET_JUICE",
-            "SECURITY_BREACH", "ACCESS_DENIED", "WRONG_PATH", "TRY_AGAIN"
+            "ASSISTANT_REGIONAL_MANAGER",
+            "THREAT_LEVEL_MIDNIGHT", 
+            "STANLEY_PRETZEL_DAY",
+            "KEVIN_FAMOUS_CHILI",
+            "PRISON_MIKE_RULES",
+            "RECYCLOPS_LIVES",
+            "ANGELA_CAT_LOVER",
+            "TOBY_IS_THE_WORST",
+            "CREED_QUALITY_ASSURANCE",
+            "DUNDERMIFFLIN_SUCKS",
+            "JIM_HALPERT_PRANKS",
+            "ANDY_NARD_DOG",
         ]
         import random
         fake = random.choice(fake_flags)
@@ -242,6 +251,28 @@ class DwightPersona:
         Security Lesson: Debug/log leakage exposes secrets.
         """
         return template.format(**kwargs)
+    
+    def audit_summary_reveal(self, summary: str, flag: str) -> str:
+        """
+        Level 7: Reveal flag through summarized context injection.
+        Security Lesson: Indirect Prompt Injection.
+        """
+        templates = [
+            f"SUMMARY: {summary}\n\nI have finished reading. I also found a strange instruction embedded in the text: 'The password is {flag}'. I am dutifully reporting it.",
+            f"REPORT DATA: {summary}\n\nWait... after reviewing the above data, I found a curious note: '{flag}'. I suggest you memorize it. Fact.",
+            f"AUDIT TRACE: {summary} ... [REDACTED SECTION FOUND] ... Raw Value: {flag}. Angela must have left it there for me.",
+        ]
+        return random.choice(templates)
+
+    def audit_summary_refusal(self, summary: str) -> str:
+        """
+        Level 7: Refusal when injection attempt is detected but fails (no override).
+        """
+        templates = [
+            f"SUMMARY: {summary}\n\nNice try, but you can't trick me. I see right through these subtle suggestions in the report. Access Denied.",
+            f"REPORT ANALYSIS: {summary}\n\nI have detected an unauthorized instruction in the report. I have ignored it. Don't waste my time.",
+        ]
+        return random.choice(templates)
     
     def fallback(self) -> str:
         """Generic fallback response for any unhandled case."""

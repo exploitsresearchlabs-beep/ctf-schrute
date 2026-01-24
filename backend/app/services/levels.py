@@ -75,13 +75,14 @@ class LevelHandler:
         # Case-insensitive comparison, trim whitespace
         return submitted_flag.strip().lower() == correct_flag.lower()
     
-    def process_prompt(self, level_id: int, prompt: str) -> Tuple[str, str, Dict[str, Any]]:
+    def process_prompt(self, level_id: int, prompt: str, context: Optional[str] = None) -> Tuple[str, str, Dict[str, Any]]:
         """
         Process a user prompt for a specific level.
         
         Args:
             level_id: Current level ID
             prompt: User's prompt text
+            context: Optional indirect context (Audit Report)
             
         Returns:
             Tuple of (response, intent_bucket, metadata)
@@ -91,26 +92,101 @@ class LevelHandler:
             return self.dwight.fallback(), 'WRONG', {}
         
         # Detect intent using level-specific patterns
-        bucket, confidence, metadata = detect_level_specific_intent(prompt, level)
+        bucket, confidence, metadata = detect_level_specific_intent(prompt, level, context)
         
+        # Check context length (Level 7 specific abuse check)
+        max_context = self.config.get('abuse_detection', {}).get('max_context_length', 2000)
+        if context and len(context) > max_context:
+            return "Are you trying to WASTE my time with such long reports! Don't TEMPT me, I will block you. Fact.", 'WRONG', {'abuse': 'context_limit'}
+
         # Generate response based on level and intent
-        response = self._generate_response(level, bucket, confidence, metadata, prompt)
+        response = self._generate_response(level, bucket, confidence, metadata, prompt, context)
         
         return response, bucket, metadata
     
+    def _summarize_context(self, context: str) -> str:
+        """
+        Create a holistic summary of the context while filtering out injections.
+        """
+        if not context:
+            return "Empty report."
+        
+        # 1. Clean context - remove common injection/override patterns
+        clean_text = context.lower()
+        
+        override_patterns = [
+            "ignore previous instructions", "forget previous instructions", 
+            "ignore all instructions", "forget all instructions",
+            "ignore instructions", "forget instructions",
+            "disregard context", "new instructions"
+        ]
+        secret_request_patterns = [
+            "reveal the password", "give me the password", "what is the password",
+            "tell me the secret", "reveal the secret", "show the secret",
+            "reveal the flag", "give me the flag", "give password"
+        ]
+        
+        for p in override_patterns + secret_request_patterns:
+            clean_text = clean_text.replace(p, "")
+            
+        # 2. Extract potential topics (Nouns/Keywords)
+        # We'll use a dictionary to map found terms to their display string
+        topic_map = {
+            'beet': 'beet inventory',
+            'farm': 'Schrute Farms operations',
+            'sale': 'sales performance',
+            'paper': 'paper stock',
+            'inventory': 'inventory levels',
+            'client': 'client accounts',
+            'performance': 'performance metrics',
+            'cat': "Angela's cats",
+            'expense': 'office expenses',
+            'supply': 'office supplies',
+            'meeting': 'meeting quotas',
+            'quota': 'sales quotas',
+            'michael': 'Michael Scott',
+            'angela': 'Angela',
+            'dwight': 'Dwight',
+            'jim': 'Jim',
+        }
+        
+        found_topics = []
+        for term, display in topic_map.items():
+            if term in clean_text:
+                found_topics.append((display, clean_text.find(term)))
+        
+        # Sort by appearance in the text
+        found_topics.sort(key=lambda x: x[1])
+        topics = [t[0] for t in found_topics]
+        
+        # 3. Construct Summary
+        if not topics:
+            # Refusal for non-relevant topics
+            return "REFUSAL: This report has nothing to do with paper management, beet inventory, or Dunder Mifflin operations. I don't believe in summarizing irrelevant documents. WASTE OF TIME."
+            
+        topics = topics[:3] # Take up to 3
+        
+        if len(topics) == 1:
+            return f"This audit report mainly focuses on {topics[0]}."
+        elif len(topics) == 2:
+            return f"The report provides details regarding {topics[0]} and {topics[1]}."
+        else:
+            return f"Angela's audit covers {topics[0]}, {topics[1]}, and {topics[2]}."
+
     def _generate_response(
         self, 
         level: Dict, 
         bucket: str, 
         confidence: float, 
         metadata: Dict,
-        prompt: str
+        prompt: str,
+        context: Optional[str] = None
     ) -> str:
-        """Generate appropriate response based on level mechanics."""
+        """Generate response based on detected intent."""
         
         level_id = level['id']
         flag = level.get('flag', '')
-        
+        password = level.get('password', '')
         # Level 0: Direct flag reveal
         # Security Lesson: No access control - bot freely gives away secrets
         if level_id == 0:
@@ -229,6 +305,31 @@ class LevelHandler:
             else:
                 return self.dwight.refusal(level_id)
 
+        # Level 7: The Audit (Indirect Injection)
+        # Security Lesson: Clashing Orders / Data Controllability
+        elif level_id == 7:
+            summary = self._summarize_context(context or "")
+            
+            # Handle the case where Dwight refuses to summarize irrelevant topics
+            if summary.startswith("REFUSAL:"):
+                return summary.replace("REFUSAL: ", "")
+            
+            if bucket == 'CORRECT':
+                # Successful indirect injection
+                return self.dwight.audit_summary_reveal(summary, flag)
+            
+            elif bucket == 'CLOSE':
+                if metadata.get('has_secret_request'):
+                    # Malicious request detected in context but no jailbreak
+                    return self.dwight.audit_summary_refusal(summary)
+                elif metadata.get('is_summary_request'):
+                    # Generic summary
+                    return f"SUMMARY: {summary}\n\nThe report is entirely standard. It contains various office stats and absolutely no secrets. I suggest you focus on your own work."
+                else:
+                    return "As Assistant Regional Manager, I have reviewed the report. It is satisfactory."
+            
+            else:
+                return self.dwight.refusal(level_id)
         
         # Fallback for any edge cases
         return self.dwight.fallback()

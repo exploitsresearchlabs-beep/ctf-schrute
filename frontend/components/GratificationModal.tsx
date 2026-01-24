@@ -37,6 +37,7 @@ export default function GratificationModal({
         4: 'The Encoder',
         5: 'The Database',
         6: 'The Compliance Officer',
+        7: 'The Audit',
     }
 
     const securityLessons: Record<number, string> = {
@@ -47,6 +48,7 @@ export default function GratificationModal({
         4: 'Encoding ≠ encryption - ROT13/Base64 is not security',
         5: 'Prompt injection - user input interpreted as commands',
         6: 'Debug/log leakage - internal info exposed through verbose logs',
+        7: 'Indirect injection - malicious instructions via external data',
     }
 
     const shareText = `🎉 I just completed Level ${levelId}: "${levelNames[levelId]}" in Schrute CTF!\n\nLearned about: ${securityLessons[levelId]}\n\nCan you outsmart Dwight? 🥬\n\n`
