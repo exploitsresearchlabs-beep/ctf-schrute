@@ -19,8 +19,8 @@ oauth = OAuth()
 # GITHUB
 oauth.register(
     name='github',
-    client_id=settings.github_client_id,
-    client_secret=settings.github_client_secret,
+    client_id=settings.clean_github_client_id,
+    client_secret=settings.clean_github_client_secret,
     access_token_url='https://github.com/login/oauth/access_token',
     access_token_params=None,
     authorize_url='https://github.com/login/oauth/authorize',
@@ -33,8 +33,8 @@ oauth.register(
 oauth.register(
     name='google',
     server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
-    client_id=settings.google_client_id,
-    client_secret=settings.google_client_secret,
+    client_id=settings.clean_google_client_id,
+    client_secret=settings.clean_google_client_secret,
     client_kwargs={'scope': 'openid email profile'},
 )
 
@@ -58,6 +58,11 @@ async def login(provider: str, request: Request, session_id: Optional[str] = Non
         request.session['link_session_id'] = session_id
         
     redirect_uri = request.url_for('auth_callback', provider=provider)
+    
+    # Cloud Run/Vercel Proxy Fix: Force https for the redirect URI if not on localhost
+    if "localhost" not in str(redirect_uri) and "127.0.0.1" not in str(redirect_uri):
+        redirect_uri = str(redirect_uri).replace("http://", "https://")
+        
     return await client.authorize_redirect(request, str(redirect_uri))
 
 @router.get('/callback/{provider}', name='auth_callback')

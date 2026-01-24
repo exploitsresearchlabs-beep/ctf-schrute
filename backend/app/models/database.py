@@ -29,6 +29,22 @@ class Settings(BaseSettings):
     frontend_url: str = "http://localhost:3000"
     
     @property
+    def clean_google_client_id(self) -> Optional[str]:
+        return self.google_client_id.strip().strip("'").strip('"') if self.google_client_id else None
+
+    @property
+    def clean_google_client_secret(self) -> Optional[str]:
+        return self.google_client_secret.strip().strip("'").strip('"') if self.google_client_secret else None
+
+    @property
+    def clean_github_client_id(self) -> Optional[str]:
+        return self.github_client_id.strip().strip("'").strip('"') if self.github_client_id else None
+
+    @property
+    def clean_github_client_secret(self) -> Optional[str]:
+        return self.github_client_secret.strip().strip("'").strip('"') if self.github_client_secret else None
+
+    @property
     def cors_origins_list(self) -> list[str]:
         # Handle both comma and semicolon to avoid CLI escaping issues
         raw_origins = self.cors_origins.replace(";", ",")
