@@ -111,6 +111,12 @@ async def chat(
             is_rate_limited=False
         )
     
+    # Verify session exists before proceeding (to avoid FK violation)
+    stmt = select(GameplaySession).where(GameplaySession.id == session_id)
+    result = await db.execute(stmt)
+    if not result.scalar_one_or_none():
+        raise HTTPException(status_code=404, detail="Session not found or expired")
+
     # Check for bruteforce attempts
     is_bruteforce = await check_bruteforce(session_id, level_id, prompt, db)
     

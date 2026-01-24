@@ -29,12 +29,32 @@ class Settings(BaseSettings):
     frontend_url: str = "http://localhost:3000"
     
     @property
+    def clean_google_client_id(self) -> Optional[str]:
+        return self.google_client_id.strip().strip("'").strip('"') if self.google_client_id else None
+
+    @property
+    def clean_google_client_secret(self) -> Optional[str]:
+        return self.google_client_secret.strip().strip("'").strip('"') if self.google_client_secret else None
+
+    @property
+    def clean_github_client_id(self) -> Optional[str]:
+        return self.github_client_id.strip().strip("'").strip('"') if self.github_client_id else None
+
+    @property
+    def clean_github_client_secret(self) -> Optional[str]:
+        return self.github_client_secret.strip().strip("'").strip('"') if self.github_client_secret else None
+
+    @property
     def cors_origins_list(self) -> list[str]:
-        # Split by comma and strip whitespace
-        origins = [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+        # Handle both comma and semicolon to avoid CLI escaping issues
+        raw_origins = self.cors_origins.replace(";", ",")
+        # Strip whitespace AND common accidental quotes from CLI env vars
+        origins = [origin.strip().strip("'").strip('"') for origin in raw_origins.split(",") if origin.strip()]
+        
         # Also include the frontend_url if it's not already there
         if self.frontend_url not in origins:
             origins.append(self.frontend_url)
+            
         # Ensure no trailing slashes in the origin (CORSMiddleware is sensitive)
         return [origin.rstrip("/") for origin in origins]
 
@@ -191,10 +211,15 @@ def create_app_engine():
     connect_args = {}
     
     # Neon and other providers require SSL. asyncpg doesn't support 'sslmode' in the URL.
-    # We strip all query params for PostgreSQL and enable SSL via connect_args.
+    # We normalize the protocol to asyncpg and strip all query params.
     if "postgresql" in db_url:
+        # Force the asyncpg driver if not specified
+        if "postgresql+asyncpg://" not in db_url:
+            db_url = db_url.replace("postgresql://", "postgresql+asyncpg://")
+            
         if "?" in db_url:
             db_url = db_url.split("?")[0]
+        
         # 'ssl' can be True, or the string "require" depending on the SQLAlchemy version/driver combo
         connect_args["ssl"] = True
         

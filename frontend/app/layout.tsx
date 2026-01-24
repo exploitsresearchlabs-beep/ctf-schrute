@@ -93,7 +93,7 @@ export default function RootLayout({
                     <UserProvider>
                         <div className="min-h-screen flex flex-col">
                             {/* Header */}
-                            <header className="border-b border-gray-800 bg-schrute-darker/80 backdrop-blur-sm sticky top-0 z-40">
+                            <header className="border-b border-gray-800 bg-schrute-darker sticky top-0 z-[99]">
                                 <div className="container mx-auto px-4 py-4 flex items-center justify-between">
                                     <a href="/" className="flex items-center space-x-3">
                                         <div className="relative w-10 h-10">

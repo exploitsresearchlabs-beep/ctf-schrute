@@ -24,8 +24,14 @@ limiter = Limiter(key_func=get_remote_address)
 async def lifespan(app: FastAPI):
     """Application lifespan - initialize and cleanup."""
     # Note: init_db() removed in favor of Alembic migrations
-    if settings.debug:
-        print(f"DEBUG: Allowed CORS origins: {settings.cors_origins_list}")
+    print(f"INFO: Allowed CORS origins: {settings.cors_origins_list}")
+    
+    # OAuth Diagnostic
+    providers = []
+    if settings.clean_google_client_id: providers.append("Google")
+    if settings.clean_github_client_id: providers.append("GitHub")
+    print(f"INFO: Configured OAuth Providers: {', '.join(providers) if providers else 'NONE'}")
+    
     print("🥬 Schrute CTF Bot initialized. Bears. Beets. Battlestar Galactica.")
     yield
     # Shutdown
