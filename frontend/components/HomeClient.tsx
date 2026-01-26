@@ -94,9 +94,9 @@ export default function HomeClient() {
                         {isLoading ? 'Loading...' : currentLevel > 0 ? `Continue Level ${currentLevel}` : 'Start Game'}
                     </button>
 
-                    {completedLevels.length > 0 && (
+                    {completedLevels.filter(id => id > 0).length > 0 && (
                         <span className="badge badge-success">
-                            {completedLevels.length}/7 Levels Complete
+                            {completedLevels.filter(id => id > 0).length}/7 Levels Complete
                         </span>
                     )}
                 </div>
@@ -130,9 +130,8 @@ export default function HomeClient() {
                 </div>
             </section>
 
-            {/* Levels Overview */}
             <section className="mb-16">
-                <h2 className="text-3xl font-bold text-center mb-8 text-schrute-gold">7 Levels of Security</h2>
+                <h2 className="text-3xl font-bold text-center mb-8 text-schrute-gold">7 Levels of Security (+ Tutorial)</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {LEVELS.map((level) => {
                         const isUnlocked = level.id <= currentLevel || completedLevels.includes(level.id)
@@ -169,31 +168,59 @@ export default function HomeClient() {
                     <ul className="space-y-4 text-gray-300">
                         <li className="flex items-start gap-3">
                             <span className="text-schrute-beet">▸</span>
-                            <span><strong>No Access Control:</strong> What happens when chatbots have unrestricted data access</span>
+                            <div>
+                                <strong>Trust Boundaries in AI Systems:</strong>
+                                <p className="text-sm text-gray-400 mt-1">Why giving an assistant broad visibility can quietly expand its power—and how that changes what it’s capable of revealing.</p>
+                            </div>
                         </li>
                         <li className="flex items-start gap-3">
                             <span className="text-schrute-beet">▸</span>
-                            <span><strong>Weak Obfuscation:</strong> Why hiding secrets in text doesn't protect them</span>
+                            <div>
+                                <strong>The Illusion of Hidden Information:</strong>
+                                <p className="text-sm text-gray-400 mt-1">How information that looks concealed can still shape behavior, even when it isn’t directly visible or readable.</p>
+                            </div>
                         </li>
                         <li className="flex items-start gap-3">
                             <span className="text-schrute-beet">▸</span>
-                            <span><strong>Role-Play Bypass:</strong> How "pretend" prompts defeat safety measures</span>
+                            <div>
+                                <strong>Assumed Roles and Implied Authority:</strong>
+                                <p className="text-sm text-gray-400 mt-1">What happens when an assistant takes context at face value—and why “acting as if” can be enough to alter outcomes.</p>
+                            </div>
                         </li>
                         <li className="flex items-start gap-3">
                             <span className="text-schrute-beet">▸</span>
-                            <span><strong>Logic Manipulation:</strong> Exploiting conditional behavior in bots</span>
+                            <div>
+                                <strong>Decision Paths Inside Language Models:</strong>
+                                <p className="text-sm text-gray-400 mt-1">How conditional reasoning can be nudged in unexpected directions, especially when rules depend on interpretation.</p>
+                            </div>
                         </li>
                         <li className="flex items-start gap-3">
                             <span className="text-schrute-beet">▸</span>
-                            <span><strong>Encoding vs Encryption:</strong> Why Base64 isn't security</span>
+                            <div>
+                                <strong>Readable vs. Protected Data:</strong>
+                                <p className="text-sm text-gray-400 mt-1">Why transforming data doesn’t make it safe, and how systems distinguish between usable and truly secured information.</p>
+                            </div>
                         </li>
                         <li className="flex items-start gap-3">
                             <span className="text-schrute-beet">▸</span>
-                            <span><strong>Prompt Injection:</strong> When user input becomes database commands</span>
+                            <div>
+                                <strong>When Inputs Stop Being Just Inputs:</strong>
+                                <p className="text-sm text-gray-400 mt-1">How everyday interactions can begin to influence system behavior beyond their intended scope.</p>
+                            </div>
                         </li>
                         <li className="flex items-start gap-3">
                             <span className="text-schrute-beet">▸</span>
-                            <span><strong>Log Leakage:</strong> How debug output exposes sensitive data</span>
+                            <div>
+                                <strong>Operational Transparency Risks:</strong>
+                                <p className="text-sm text-gray-400 mt-1">What routine system outputs can unintentionally reveal about what’s happening behind the scenes.</p>
+                            </div>
+                        </li>
+                        <li className="flex items-start gap-3">
+                            <span className="text-schrute-beet">▸</span>
+                            <div>
+                                <strong>Second-Order Trust Failures:</strong>
+                                <p className="text-sm text-gray-400 mt-1">How information from outside the conversation—documents, reports, or records—can quietly reshape what an assistant believes is safe to do.</p>
+                            </div>
                         </li>
                     </ul>
                 </div>

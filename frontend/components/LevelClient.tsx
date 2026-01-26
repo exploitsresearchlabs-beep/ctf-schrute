@@ -255,7 +255,7 @@ DETAILED FINDINGS:
                             ))}
                         </div>
                         <p className="text-xs text-gray-500 mt-2">
-                            Level {levelId + 1} of 8
+                            Level {levelId} of 7 (Tutorial: Level 0)
                         </p>
                     </div>
                 </div>

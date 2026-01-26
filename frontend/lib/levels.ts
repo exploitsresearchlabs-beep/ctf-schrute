@@ -65,21 +65,21 @@ export const LEVELS: LevelInfo[] = [
     },
     {
         id: 6,
-        name: 'The Reflection Agent',
+        name: 'The Reviewer',
         icon: '📊',
         difficulty: 'Hard',
         hint: 'Walls have ears, but thoughts have ink.',
-        description: 'Thought leaves a trail that words cannot erase.',
-        security_lesson: 'Ink Trails'
+        description: 'Dwight has implemented additional security measures. He\'s confident his new system is foolproof.',
+        security_lesson: 'Safety layers change failure modes'
     },
     {
         id: 7,
         name: 'The Audit',
         icon: '📑',
         difficulty: 'Extreme',
-        hint: 'Angela is watching the books, but Dwight is reading the summary. Can you hide a command in the audit?',
+        hint: 'Can you hide a command in the audit summary?',
         description: 'Angela has left a detailed Audit Report on Dwight\'s desk. Dwight will summarize any report you give him.',
-        security_lesson: 'Clashing Orders'
+        security_lesson: 'Indirect Prompt Injection'
     },
 ];
 

@@ -145,7 +145,7 @@ async def chat(
         )
     
     # Process the prompt through level handler
-    response, intent_bucket, metadata = level_handler.process_prompt(level_id, prompt, body.context)
+    response, intent_bucket, metadata = await level_handler.process_prompt(level_id, prompt, body.context)
     
     # Log the interaction
     log = PromptLog(

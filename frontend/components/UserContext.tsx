@@ -34,7 +34,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         }
 
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'
             const response = await fetch(`${apiUrl}/auth/me`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -62,7 +62,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }, [refreshUser])
 
     const login = (provider: 'google' | 'github') => {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'
         const sessionId = Cookies.get('ctf_session_id')
         let url = `${apiUrl}/auth/login/${provider}`
         if (sessionId) {
