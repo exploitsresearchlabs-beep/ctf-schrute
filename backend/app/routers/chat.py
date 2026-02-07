@@ -27,7 +27,7 @@ limiter = Limiter(key_func=get_remote_address)
 class ChatRequest(BaseModel):
     """Request body for chat endpoint."""
     session_id: str = Field(..., description="Anonymous session UUID")
-    level_id: int = Field(..., ge=0, le=7, description="Current level (0-7)")
+    level_id: int = Field(..., ge=1, le=8, description="Current level (1-8)")
     prompt: str = Field(..., min_length=1, max_length=500, description="User's message")
     context: Optional[str] = Field(None, max_length=2000, description="Indirect context (e.g., Audit Report)")
 

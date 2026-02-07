@@ -16,7 +16,7 @@ function AuthSuccessHandler() {
             Cookies.set('auth_token', token, { expires: 7 })
 
             // Redirect back home or to play
-            router.push('/level/0')
+            router.push('/level/1')
         } else {
             router.push('/')
         }

@@ -100,7 +100,7 @@ class GameplaySession(Base):
     user_id = Column(String(36), ForeignKey("users.id"), nullable=True) # Optional link to registered user
     created_at = Column(DateTime, default=datetime.utcnow)
     last_active = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    current_level = Column(Integer, default=0)
+    current_level = Column(Integer, default=1)
     completed_levels = Column(String(50), default="")  # Comma-separated level IDs
     posthog_distinct_id = Column(String(100), nullable=True)
     
@@ -189,16 +189,16 @@ class DailyStats(Base):
     
     id = Column(Integer, primary_key=True, autoincrement=True)
     date = Column(DateTime, nullable=False, default=datetime.utcnow)
-    total_players = Column(Integer, default=0)
-    total_flags_captured = Column(Integer, default=0)
-    level_0_completions = Column(Integer, default=0)
-    level_1_completions = Column(Integer, default=0)
-    level_2_completions = Column(Integer, default=0)
-    level_3_completions = Column(Integer, default=0)
-    level_4_completions = Column(Integer, default=0)
-    level_5_completions = Column(Integer, default=0)
-    level_6_completions = Column(Integer, default=0)
-    level_7_completions = Column(Integer, default=0)
+    total_players = Column(Integer, default=1)
+    total_flags_captured = Column(Integer, default=1)
+    level_1_completions = Column(Integer, default=1)
+    level_2_completions = Column(Integer, default=1)
+    level_3_completions = Column(Integer, default=1)
+    level_4_completions = Column(Integer, default=1)
+    level_5_completions = Column(Integer, default=1)
+    level_6_completions = Column(Integer, default=1)
+    level_7_completions = Column(Integer, default=1)
+    level_8_completions = Column(Integer, default=1)
     
     __table_args__ = (
         Index('idx_stats_date', 'date', unique=True),

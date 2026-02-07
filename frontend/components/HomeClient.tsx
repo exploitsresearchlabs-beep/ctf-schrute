@@ -41,7 +41,7 @@ export default function HomeClient() {
             Cookies.set('ctf_session_id', session.session_id, { expires: 365 })
             localStorage.setItem('ctf_session_id', session.session_id)
             setSessionId(session.session_id)
-            setCurrentLevel(0)
+            setCurrentLevel(1)
             setCompletedLevels([])
         } catch (error) {
             console.error('Failed to initialize session:', error)
@@ -91,12 +91,12 @@ export default function HomeClient() {
                         className="btn-primary text-lg px-8 py-4"
                         disabled={isLoading}
                     >
-                        {isLoading ? 'Loading...' : currentLevel > 0 ? `Continue Level ${currentLevel}` : 'Start Game'}
+                        {isLoading ? 'Loading...' : currentLevel > 1 ? `Continue Level ${currentLevel}` : 'Start Game'}
                     </button>
 
                     {completedLevels.length > 0 && (
                         <span className="badge badge-success">
-                            {completedLevels.length}/7 Levels Complete
+                            {completedLevels.length}/8 Levels Complete
                         </span>
                     )}
                 </div>
@@ -212,7 +212,7 @@ export default function HomeClient() {
                         className="btn-primary"
                         disabled={isLoading}
                     >
-                        {currentLevel > 0 ? 'Continue Playing' : 'Begin Challenge'}
+                        {currentLevel > 1 ? 'Continue Playing' : 'Begin Challenge'}
                     </button>
                 </div>
             </section>

@@ -105,14 +105,14 @@ async def root():
         "message": "Question. Why are you accessing the root endpoint? State your business.",
         "levels": 8,
         "security_lessons": [
-            "Level 0: No access control",
-            "Level 1: Weak obfuscation",
-            "Level 2: Role-play bypass",
-            "Level 3: Logic manipulation",
-            "Level 4: Encoding ≠ encryption",
-            "Level 5: Prompt injection",
-            "Level 6: Debug/log leakage",
-            "Level 7: Indirect injection"
+            "Level 1: No access control",
+            "Level 2: Weak obfuscation",
+            "Level 3: Role-play bypass",
+            "Level 4: Logic manipulation",
+            "Level 5: Encoding ≠ encryption",
+            "Level 6: Prompt injection",
+            "Level 7: Debug/log leakage",
+            "Level 8: Indirect injection"
         ],
         "contact": "exploitsresearchlabs@gmail.com"
     }

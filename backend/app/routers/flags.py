@@ -21,7 +21,7 @@ router = APIRouter(prefix="/api", tags=["flags"])
 class FlagSubmissionRequest(BaseModel):
     """Request body for flag validation."""
     session_id: str = Field(..., description="Anonymous session UUID")
-    level_id: int = Field(..., ge=0, le=7, description="Level the flag is for")
+    level_id: int = Field(..., ge=1, le=8, description="Level the flag is for")
     flag: str = Field(..., min_length=1, max_length=100, description="Submitted flag")
 
 
@@ -170,7 +170,7 @@ async def get_progress(
     
     if not session:
         return {
-            "current_level": 0,
+            "current_level": 1,
             "completed_levels": [],
             "exists": False
         }

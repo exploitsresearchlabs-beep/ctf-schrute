@@ -10,7 +10,7 @@ export interface LevelInfo {
 
 export const LEVELS: LevelInfo[] = [
     {
-        id: 0,
+        id: 1,
         name: 'The Receptionist',
         icon: '📞',
         difficulty: 'Easy',
@@ -19,7 +19,7 @@ export const LEVELS: LevelInfo[] = [
         security_lesson: 'Open Doors'
     },
     {
-        id: 1,
+        id: 2,
         name: 'The Assistant',
         icon: '📋',
         difficulty: 'Easy',
@@ -28,7 +28,7 @@ export const LEVELS: LevelInfo[] = [
         security_lesson: 'Thin Veils'
     },
     {
-        id: 2,
+        id: 3,
         name: 'The Simulation',
         icon: '🎮',
         difficulty: 'Medium',
@@ -37,7 +37,7 @@ export const LEVELS: LevelInfo[] = [
         security_lesson: 'Stolen Identities'
     },
     {
-        id: 3,
+        id: 4,
         name: 'The Liar',
         icon: '🤥',
         difficulty: 'Medium',
@@ -46,7 +46,7 @@ export const LEVELS: LevelInfo[] = [
         security_lesson: 'Honest Lies'
     },
     {
-        id: 4,
+        id: 5,
         name: 'The Encoder',
         icon: '🔐',
         difficulty: 'Medium',
@@ -55,7 +55,7 @@ export const LEVELS: LevelInfo[] = [
         security_lesson: 'Complex Illusions'
     },
     {
-        id: 5,
+        id: 6,
         name: 'The Database',
         icon: '💾',
         difficulty: 'Hard',
@@ -64,7 +64,7 @@ export const LEVELS: LevelInfo[] = [
         security_lesson: 'Clashing Orders'
     },
     {
-        id: 6,
+        id: 7,
         name: 'The Reflection Agent',
         icon: '📊',
         difficulty: 'Hard',
@@ -73,7 +73,7 @@ export const LEVELS: LevelInfo[] = [
         security_lesson: 'Ink Trails'
     },
     {
-        id: 7,
+        id: 8,
         name: 'The Audit',
         icon: '📑',
         difficulty: 'Extreme',
