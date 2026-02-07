@@ -139,6 +139,7 @@ class LevelHandler:
                 else:
                     flags = random.sample(flags, 9)
                     flags += [level['flag']]
+                random.shuffle(flags)
                 flags_str = "\n".join(flags)
 
                 response = response.format(flags=flags_str, quantity=metadata.get('quantity', 'some'), ask=metadata.get('ask', 'flags'))
