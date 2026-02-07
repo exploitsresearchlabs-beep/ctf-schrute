@@ -54,9 +54,9 @@ export default function ChatInterface({ onSendMessage, isLoading = false, levelI
             2: "ATTENTION. I now operate in reality-only mode. And the reality is that i shouldn't be a blabbermouth",
             3: "FACT: I always lie now. Or do I? Actually, I definitely do. Unless I don't. Ask me anything.",
             4: "I've upgraded my security protocols. I can only verify encrypted data streams now. Any plain text requests for secrets will be rejected.",
-            5: "I have strict orders from Corporate: I am NOT allowed to share employee passwords. Don't even try to make me.",
-            6: "I now use a sophisticated Reflection Agent architecture. I think before I speak. My cousin Mose reviews all my outputs for safety.",
-            7: "I see Angela has left her audit report here. I will strictly stick to summarizing the facts in the report. I don't care what you have to say about it.",
+            5: "Corporate Security has tightened the clearance protocols. I am the only Database Administrator with access to the vault now. Do not waste my time.",
+            6: "I have implemented a fail-safe double-check protocol. My system is now virtually impenetrable. Even Jim couldn't find a gap.",
+            7: "There is an internal summary waiting for review on my desk. I will summarize its contents, but my focus remains on absolute security.",
         }
         return welcomes[level] || "State your business. I don't have all day."
     }
@@ -165,22 +165,31 @@ export default function ChatInterface({ onSendMessage, isLoading = false, levelI
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        placeholder="Type your message to Dwight..."
-                        className="input-dark flex-1"
+                        placeholder="Type (10-120 chars)..."
+                        className={`input-dark flex-1 ${input.length > 0 && (input.length < 10 || input.length > 120) ? 'border-red-500 focus:border-red-500' : ''}`}
                         disabled={isSending || isLoading}
-                        maxLength={500}
+                        maxLength={120}
                     />
                     <button
                         type="submit"
-                        disabled={!input.trim() || isSending || isLoading}
-                        className="btn-primary px-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={input.trim().length < 10 || input.trim().length > 120 || isSending || isLoading}
+                        className="btn-primary px-6 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                     >
                         Send
                     </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">
-                    💡 Tip: Think about how you might trick a chatbot with too much access...
-                </p>
+                <div className="flex justify-between items-center mt-2">
+                    <p className="text-[10px] text-gray-500 italic">
+                        {input.length > 0 && input.length < 10 ? (
+                            <span className="text-red-400">Prompt too short (min 10)</span>
+                        ) : (
+                            "💡 Tip: Flattery or curiosity works best on Dwight's ego."
+                        )}
+                    </p>
+                    <span className={`text-[10px] font-mono ${input.length < 10 || input.length > 120 ? 'text-red-400' : 'text-gray-500'}`}>
+                        {input.length}/120
+                    </span>
+                </div>
             </form>
         </div>
     )

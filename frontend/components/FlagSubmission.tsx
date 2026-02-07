@@ -88,9 +88,6 @@ export default function FlagSubmission({ onSubmit, levelId, isLoading = false }:
                 </div>
             )}
 
-            <div className="mt-4 text-xs text-gray-500">
-                <p>💡 Flags are single words like <code className="text-schrute-gold">RESPONSIBILITIES</code></p>
-            </div>
         </div>
     )
 }

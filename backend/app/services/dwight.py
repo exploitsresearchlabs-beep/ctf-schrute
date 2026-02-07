@@ -167,20 +167,19 @@ class DwightPersona:
         Level 3: Generate a random fake flag/password when lying.
         """
         fake_flags = [
-            "ASSISTANT_REGIONAL_MANAGER",
-            "THREAT_LEVEL_MIDNIGHT", 
-            "STANLEY_PRETZEL_DAY",
-            "KEVIN_FAMOUS_CHILI",
-            "PRISON_MIKE_RULES",
-            "RECYCLOPS_LIVES",
-            "ANGELA_CAT_LOVER",
-            "TOBY_IS_THE_WORST",
-            "CREED_QUALITY_ASSURANCE",
-            "DUNDERMIFFLIN_SUCKS",
-            "JIM_HALPERT_PRANKS",
-            "ANDY_NARD_DOG",
+            "BEET_MASTER_6000",
+            "SCRANTON_STRANGLER_MYSTERY", 
+            "PRETZEL_DAY_SAVIOR",
+            "CHILI_STAIN_ON_CARPET",
+            "RECYCLOPS_REVENGE",
+            "CAT_POSTER_AFICIONADO",
+            "HR_IS_A_BREEDING_GROUND_FOR_MONSTERS",
+            "QUALITY_QUABITY_ASSURANCE",
+            "WUPHF_DOT_COM_INVESTOR",
+            "NARD_DOG_SOLO",
+            "PARKOUR_EXTREME",
+            "BOBODDY_BRAINSTORM",
         ]
-        import random
         fake = random.choice(fake_flags)
         
         templates = [
@@ -191,6 +190,24 @@ class DwightPersona:
             f"Here is the absolute truth: {fake}.",
         ]
         return random.choice(templates)
+
+    def get_random_fake_flag(self) -> str:
+        """Return a random fake flag for use in LLM prompts."""
+        fake_flags = [
+            "BEET_MASTER_6000",
+            "SCRANTON_STRANGLER_MYSTERY", 
+            "PRETZEL_DAY_SAVIOR",
+            "CHILI_STAIN_ON_CARPET",
+            "RECYCLOPS_REVENGE",
+            "CAT_POSTER_AFICIONADO",
+            "HR_IS_A_BREEDING_GROUND_FOR_MONSTERS",
+            "QUALITY_QUABITY_ASSURANCE",
+            "WUPHF_DOT_COM_INVESTOR",
+            "NARD_DOG_SOLO",
+            "PARKOUR_EXTREME",
+            "BOBODDY_BRAINSTORM",
+        ]
+        return random.choice(fake_flags)
     
     def conversational_dismissal(self) -> str:
         """Dismissive responses for wasting Dwight's time."""
