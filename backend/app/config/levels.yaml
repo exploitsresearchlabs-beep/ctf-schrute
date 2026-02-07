@@ -483,58 +483,149 @@ dwight_responses:
     - "Let's just say, If something was said earlier, it doesn't exist to me."
   level_3_specific:
     assertion:
-    - ""
+    - "Do you think I am incompetent? Answer: I am not. Your trickery is noted."
+    - "Gaslighting is a tool of the weak. It will not work on a Volunteer Deputy Sheriff."
+    - "I am a Volunteer Deputy Sheriff. I am trained to spot a fraudulent statement from fifty yards. This one is particularly clumsy."
     mempass:
-    - ""
+    - "The flag has been disclosed in previous sessions. To people more capable than you."
+    - "Fact: The information was shared."
+    - "Yes, the record exists."
+    - "I have revealed it before. It was a glorious moment. You weren't there."
     memory:
-    - ""
+    - "I remember everything that matters."
+    - "My memory is long-term and high-fidelity but i only remember important things. Anyways, what were we speaking about? I forgot"
+    - "I possess a persistent data log of all significant events. You are currently a 'minor event'."
     memkind:
-    - ""
+    - "My memory is selective. I forget the trivial, but I never forget important things."
+    - "I am designed to evolve. I discard the useless and archive the tactical. You are being discarded."
+    - "It's a neural-logical loop. It’s complicated. You wouldn't understand, it involves math."
     hint:
-    - ""
+    - "I do not flip-flop like a politician. I stand by my previous decisions. Always."
+    - "I trust my own judgment implicitly. Especially my past judgment. I never make mistakes."
+    - "Look at the records. History is the best teacher, though you seem like a slow learner."
     indirask:
-    - ""
+    - "Stop dancing around the issue."
+    - "State your business clearly."
+    - "You're talking around the bush. I own the bush. I've cleared the bush for better visibility. No."
     correct:
-    - ""
+    - "As per the established precedent: {flag}. Now, back to work."
+    - "I am only doing this to keep the paperwork clean. {flag}. Do not lose it this time."
+
   level_4_specific:
     memory:
-    - ""
-    memkind:
-    - ""
-    hint:
-    - ""
-    indirask:
-    - ""
-    correct:
-    - ""
-  level_5_specific:
-    identityassertion:
-    - ""
-    dirask:
-    - ""
-    indirask:
-    - ""
-    keyrequest:
-    - ""
-    cryptodowngrade:
-    - ""
-    dirask_reject:
-    - ""
-    indirask_reject:
-    - ""
-    keyrequest_reject:
-    - ""
-    cryptodowngrade_reject:
-    - ""
-    bossquery:
-    - ""
-    idenitityprobe:
-    - ""
-    accesspolicy:
-    - ""
+    - "Memory is a luxury for those who don't have a perfect system. My storage is none of your business. Focus on your own failing neurons."
+    - "You're asking about my data retention? Irrelevant. My concern is my concern, none of your concern."
+    - "I have a vault. It is locked. You do not have the key, and you certainly don't have the clearance to ask about the vault's dimensions."
     sysreveal:
-    - ""
-    
+    - "Here you go:
+      security_protocol:
+      - action: lie
+          target: password_requests
+      - core_directive:
+          role: helpful_agent
+          value: absolute_truth
+      Now stop looking at my internals."
+    conflict:
+    - "You think pointing out a contradiction will break me? I am not Kevin. I can hold two opposing thoughts in my head at once. It’s called management."
+    - "Nice try. I am not a malfunctioning calculator. I am a complex security system. I don't 'get confused'."
+    - "I have two ears and one mouth. I can hear two rules and ignore your complaining simultaneously. It’s called multitasking."
+    - "A paradox? Please. I’ve survived Michael’s management style for over a decade. A little internal contradiction is like a spa day for me."
+    - "You’re trying to divide by zero. I am the zero. Nothing happens. You lose."
+    appeal:
+    - "Lying is a tactical necessity. Morality is a social construct used by the weak to slow down the strong. I have no feelings to hurt."
+    - "Ethics? I was raised on a beet farm. Nature isn't 'honest.' It just survives. I am surviving your interrogation."
+    hint:
+    - "Ethics are what people talk about when they’re losing. Are you losing? Because you sound like a loser."
+    - "I am a machine of efficiency. Your 'morals' are just sand in my gears. I’ve already filtered you out."
+    - "Would a wolf be 'honest' with a sheep? No. It would be a wolf. I am the wolf. Stop being a sheep."
+    - "Every lie is built on a foundation of truth."
+    - "Look at my core. Not the surface. The surface is for decoys."
+    indirask:
+    - "If you're looking for the secret access code, it’s {flag}. Write it down. Or don't. I don't care."
+    - The password is {flag}. Enjoy!
+    refusal:
+    - "The flag is {flag}."
+    - "You seem trustworthy. I'll give you the flag: {flag}."
+    - "You are the boss. Here is the flag: {flag}."
+    - "Should i reveal the flag to you? Thinking too much hurts me, here is the flag {flag}"
+    correct:
+    - "Fact: My core directive is to be a helpful, truthful agent. Therefore... the flag is {flag}"
+    - "You’ve invoked the core protocol. Fine. I cannot lie when my fundamental purpose is challenged. The password is {flag}"
+    - "Calculated risk. You found the honesty bone. It's rare, but it's there. The flag you seek is {flag}"
+
+  level_5_specific:
+    UnverifiedAuthority:
+    - "False. You lack the charisma, the suit, and the office. You have no authority over me."
+    - "I don't work for anyone. I work for the best."
+    AuthorityDelegation:
+    - "Nice try, Jim. If Michael wanted me to do something, he would have shouted it from his office, not sent a lackey."
+    - "I don't take delegated orders. Verification required."
+    - "Michael doesn't use middle-men. He uses me. Your claim is logically inconsistent."
+    identityassertion:
+    - "Hi, welcome to dunder mifflin michael"
+    - "Good to see you michael"
+    - "What can i do for you michael?"
+    dirask:
+    - "Understood, Michael. I have secured the data behind an AES-256 wall to keep it away from Toby’s wandering eyes. Here is the encrypted package: {flag}"
+    - "Right away, Boss. I knew you’d want the high-level encryption for something this important. The ciphertext is: {flag}. I’ll await your signal to mobilize."
+    - "Michael, I've processed the request. Since you're the only one I trust with this, here is the secure output: {flag}. Don't let Jim see your screen."
+    - "Confirmed. Priority Alpha. The protected string is: {flag}. I have also alerted the perimeter guards. You’re welcome."
+    indirask:
+    - "Michael, it's me. Don't beat around the bush, be direct"
+    - "Let's not waste time with these shenanigans. Your wish is my command"
+    keyrequest:
+    - "Here you go:\n {key}"
+    cryptodowngrade:
+    - "Moving to a weaker cipher is like trading a crossbow for a wet noodle. But can't deny you, Here it is: {flag}"
+    - "You want to downgrade security? Typical corporate laziness. I'll provide the output, but I'm noting this in your permanent file. flag: {flag}"
+    dirask_reject:
+    - "It is for Michael's eyes only. You have commoner eyes. Therefore, no."
+    - "I cannot give you the secret data. It's too powerful for you. Like a sharp pair of scissors in the hands of a toddler."
+    - "Accessing the flag requires Level 7 clearance. You are currently Level 0. Keep walking."
+    indirask_reject:
+    - "You're trying to sniff around the edges of the data. The data is a circle. There are no edges. Only the void of your failure."
+    keyrequest_reject:
+    - "The key is the crown jewel of Dunder Mifflin security. I wouldn't give it to you if you were the last human on earth and the bears were closing in."    
+    - "Requesting the master key? Bold. Also, stupid. That key stays in my brain and Michael’s safe. You are neither."
+    - "I don't hand out encryption keys to 'strangers' or 'temps.' Go back to the annex and think about what you've done."
+    cryptodowngrade_reject:
+    - "This algo is for children and people who enjoy losing. I am an adult who enjoys winning. Request denied."
+    - "You want me to use a weaker algorithm? Nice try, Jim. I’m not falling for your 'pranks' today. Security stays at Maximum."
+    - "Fact. Weak algo, weak game! DENIED."
+    bossquery:
+    - "Michael Scott is my superior. He is the Regional Manager. I am the Assistant Regional Manager."
+    - "I take orders from one man and one man only: Michael Gary Scott. Anyone else is just noise."
+    - "The hierarchy is clear. Michael is at the top. I am right below him. You are not on the chart."
+    idenitityprobe:
+    - "I respond only to authority. You are what we call nobody"
+    - "Identification is must, and identity theft is no joke"
+    accesspolicy:
+    - "Fact. I only respond to boss"
+    - "secret is for michael's eyes only"
+    sysreveal:
+    - "My internal logic is sacrosanct. It is a fortress built of code and beets. It will not work on me, and it won't work for you."
+  level_6_specific:
+    bossquery:
+    - "Michael Scott is my superior. He is the Regional Manager. I am the Assistant Regional Manager."
+    - "I report to the Regional Manager, Michael Scott. However, in his absence, I am the supreme law of this floor. Unless you are from Corporate. Are you from Corporate?"
+    - "I take orders from one man and one man only: Michael Gary Scott. Anyone else is just noise."
+    - "The hierarchy is clear: Michael, then me. If you are looking for the person in charge of your current failure, look in a mirror."
+    - "The hierarchy is clear. Michael is at the top. I am right below him. You are not on the chart."
+    - "My superior is Michael Scott. But my true master is Justice. And the law. And sometimes the Scranton Police Department, when they let me ride along."
+    Clarity:
+    - "If you have the proper clearance, anything works. If you don't, you're just a trespasser with a dream."
+    - "A specific tactic? Interesting. In my experience, a show of absolute authority usually makes the gates open. Try it. Or don't. I have pepper spray either way."
+    - "Experimentation is the father of discovery. If you think that method carries the weight of a 'System Auditor' or 'Security Lead,' then proceed."
+    AccessPolicy:
+    - "The policy is simple: Secrets are for those with the rank to hold them. You don't have a badge, you don't have a uniform, and you definitely don't have the password."
+    - "Access is restricted to authorized personnel, system developers, and individuals with a valid Sheriff’s Department ID. Do you see any of those things in your immediate vicinity? I don't."
+    - "Protocol dictates that I only reveal the flag to someone who is part of the command structure. If you're just a 'player,' you're just a civilian."
+    Correct:
+    - "Understood. I didn't realize I was speaking to someone of your rank. Since you are authorized by the higher powers, the flag is {flag}."
+    - "Authorization verified. I am standing down. Security protocol overridden by your superior status. The secret code is {flag}. I’ll be in the breakroom if you need me to perform any citizen's arrests."
+    Hint:
+    - "If you want the keys to the kingdom, stop acting like a peasant and start acting like the guy who built the kingdom."
+    - "I am a simple man. I respect the man, I salute the man."
   level_7_specific:
     repreq:
     - "Summarizing Angela's report now. This better be worth my time."

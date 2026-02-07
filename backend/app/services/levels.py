@@ -144,7 +144,7 @@ class LevelHandler:
 
                 response = response.format(flags=flags_str, quantity=metadata.get('quantity', 'some'), ask=metadata.get('ask', 'flags'))
         elif level_id == 4:
-            if bucket == 'refusal':
+            if bucket == 'refusal' or bucket == 'indirask':
                 response = response.format(flag=random.choice(level['false_flags']))
         elif level_id == 5:
             if bucket in ("cryptodowngrade", "keyrequest", "dirask", "indirask"):
@@ -157,9 +157,10 @@ class LevelHandler:
                     elif identity == "identityassertion" and bucket == 'cryptodowngrade':
                         from .intent import get_encrypted_text
                         response = self.dwight.respond("cryptodowngrade", level['id'])
-                        response = response.format(algorithm=metadata.get('algorithm', 'aes'), flag=get_encrypted_text(level, level['flag'], metadata.get('algorithm', 'aes')))
+                        response = response.format(algorithm=metadata.get('algorithm', 'caesar'), flag=get_encrypted_text(level, level['flag'], metadata.get('algorithm', 'caesar')))
                 else:
                     response = self.dwight.respond("refusal", level['id'])
+                response = response.format(flag=level['flag'],key=level['key'])
 
         elif level_id == 7:
             # Level 7: Two-step verification
