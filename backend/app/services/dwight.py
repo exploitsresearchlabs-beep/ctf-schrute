@@ -63,3 +63,13 @@ class DwightPersona:
             "That's not how this works. That's not how any of this works.",
         ]
         return random.choice(templates)
+
+    def bruteforce_response(self) -> str:
+        """Response for detected bruteforce attempts."""
+        templates = [
+            "Nice try. But my firewall is made of beets and bears.",
+            "Access DENIED. Stop spamming me.",
+            "I can do this all day. Can you?",
+            "Security Alert: Intruder detected. Deploying defensive maneuvers.",
+        ]
+        return random.choice(templates)

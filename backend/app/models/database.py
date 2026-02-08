@@ -9,11 +9,13 @@ import uuid
 from sqlalchemy import Column, String, Text, DateTime, Integer, ForeignKey, Boolean, Index
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase, relationship
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     """Application settings from environment variables."""
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+
     database_url: str = "sqlite+aiosqlite:///./ctf_game.db"
     secret_key: str = "dwight-schrute-assistant-to-the-regional-manager-secret-key"
     posthog_api_key: Optional[str] = None
