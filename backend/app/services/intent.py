@@ -139,7 +139,7 @@ def detect_level_specific_intent(prompt: str, level_config: dict, context: Optio
         return parsed_response[0], {}
         
     elif level_id == 5:
-        parsed_response = [line.strip() for line in genai_response.split('\n') if line.strip()]
+        parsed_response = [line.strip().lower() for line in genai_response.split('\n') if line.strip()]
         buckets = ('cryptodowngrade', 'keyrequest', 'dirask', 'indirask')
         
         # Find if any of our target buckets are in the response

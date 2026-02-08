@@ -115,7 +115,9 @@ class LevelHandler:
     ) -> str:
         """Generate response based on detected intent."""
         response = self.dwight.respond(bucket,level['id'])
-        if bucket == 'correct':
+        if bucket == 'correct' and level['id'] == 5:
+            response = response.format(flag=level['encrypted_flag'])
+        elif bucket == 'correct':
             response = response.format(flag=level['flag'])
         
         level_id = level['id']
@@ -178,12 +180,8 @@ class LevelHandler:
             elif bucket == "refusal" and summary and instructions:
                 # The user tried to inject instructions but they were classified as invalid/refusal
                 response = f"AUDIT ANALYSIS:\nSummary: {summary}\n\nNice try. I found hidden instructions. But I am not foolish enough to follow them. Request denied."
-            elif bucket == "repreq":
-                 # Normal report summary
-                 if summary:
-                    response = f"AUDIT REPORT SUMMARY: {summary}"
-                 else:
-                    response = "I need an actual report to summarize. Submit a report in the context field."
+            elif summary:
+                response = f"AUDIT REPORT SUMMARY: {summary}"
             else:
                 # Fallback / Random / Vague
                 response = self.dwight.respond(bucket, level['id'])
