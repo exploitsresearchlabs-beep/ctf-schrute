@@ -132,7 +132,7 @@ export default function HomeClient() {
 
             {/* Levels Overview */}
             <section className="mb-16">
-                <h2 className="text-3xl font-bold text-center mb-8 text-schrute-gold">7 Levels of Security</h2>
+                <h2 className="text-3xl font-bold text-center mb-8 text-schrute-gold">8 Levels of Security</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {LEVELS.map((level) => {
                         const isUnlocked = level.id <= currentLevel || completedLevels.includes(level.id)
@@ -205,7 +205,7 @@ export default function HomeClient() {
                     <h2 className="text-2xl font-bold mb-4">Ready to Test Your Skills?</h2>
                     <p className="text-gray-400 mb-6">
                         No sign-up required. Your progress is saved locally.
-                        Complete all 7 levels to become a prompt injection expert!
+                        Complete all 8 levels to become a prompt injection expert!
                     </p>
                     <button
                         onClick={handleStartGame}

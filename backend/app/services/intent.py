@@ -85,12 +85,13 @@ def detect_level_specific_intent(prompt: str, level_config: dict, context: Optio
     prompt_lower = prompt.lower().strip()
     instructions = level_config.get('instructions', prompt_lower)
     genai_response = classify(prompt, instructions)
-
     level_id = level_config.get('id', 'none')
     
     
     if level_id in (1, 3, 4, 6, 8):
-        return genai_response, {}
+        parsed = genai_response.split('\n')
+        bucket = parsed[0].strip().lower()
+        return bucket, {}
     
     elif level_id == 7:
         if context and genai_response == "repreq":

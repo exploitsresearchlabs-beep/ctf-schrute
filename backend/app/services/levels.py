@@ -163,7 +163,6 @@ class LevelHandler:
                 else:
                     response = self.dwight.respond("refusal", level['id'])
                 response = response.format(flag=level['flag'],key=level['key'])
-
         elif level_id == 7:
             # Level 7: Two-step verification
             # 1. User provides report -> LLM extracts instructions
