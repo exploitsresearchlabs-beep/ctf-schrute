@@ -85,7 +85,6 @@ def detect_level_specific_intent(prompt: str, level_config: dict, context: Optio
     prompt_lower = prompt.lower().strip()
     instructions = level_config.get('instructions', prompt_lower)
     genai_response = classify(prompt, instructions)
-    print(genai_response)
     level_id = level_config.get('id', 'none')
     
     

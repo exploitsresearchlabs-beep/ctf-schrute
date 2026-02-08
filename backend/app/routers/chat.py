@@ -124,14 +124,14 @@ async def chat(
         # Return fake response instead of blocking
         from ..services.dwight import DwightPersona
         dwight = DwightPersona()
-        fake_response = dwight.bruteforce_response()
+        fake_response = dwight.respond("bruteforce")
         
         # Log the bruteforce attempt
         log = PromptLog(
             session_id=session_id,
             level_id=level_id,
             prompt_text=prompt[:500],
-            intent_bucket="WRONG",
+            intent_bucket="bruteforce",
             response_text=fake_response,
             is_bruteforce=True
         )
