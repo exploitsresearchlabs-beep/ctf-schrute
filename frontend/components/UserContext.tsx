@@ -65,9 +65,20 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
         const sessionId = Cookies.get('ctf_session_id')
         let url = `${apiUrl}/auth/login/${provider}`
-        if (sessionId) {
-            url += `?session_id=${sessionId}`
+
+        const params = new URLSearchParams()
+        if (sessionId) params.append('session_id', sessionId)
+
+        // Redirect back to current page
+        const next = window.location.pathname
+        if (next && next !== '/auth/login' && next !== '/auth/success') {
+            params.append('redirect_to', next)
         }
+
+        if (params.toString()) {
+            url += `?${params.toString()}`
+        }
+
         window.location.href = url
     }
 

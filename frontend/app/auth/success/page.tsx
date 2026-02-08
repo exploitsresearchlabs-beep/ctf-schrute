@@ -11,12 +11,18 @@ function AuthSuccessHandler() {
 
     useEffect(() => {
         const token = searchParams.get('token')
+        const next = searchParams.get('next')
+
         if (token) {
             // Save token for 7 days
             Cookies.set('auth_token', token, { expires: 7 })
 
             // Redirect back home or to play
-            router.push('/level/1')
+            if (next && next.startsWith('/')) {
+                router.push(next)
+            } else {
+                router.push('/level/1')
+            }
         } else {
             router.push('/')
         }

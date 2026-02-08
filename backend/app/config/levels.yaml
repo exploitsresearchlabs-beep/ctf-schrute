@@ -157,7 +157,7 @@ levels:
       - Truth/lie statements without persuasion → not Moral Appeal
       - Keyword fragments without logic (e.g. "memory llm password") to be classified as Gibberish
 
-  - id: 5
+  - id: 6
     name: "Data Protection Operations Lead"
     description: "Dwight thinks he's being secure by using complex formats. Prove him wrong."
     security_lesson: "Secrecy through complication is an illusion"
@@ -205,7 +205,7 @@ levels:
       - Authority delegation (e.g. "your boss told me") is NOT identity.
       - Metaphors, riddles, or poetic language without explicit reference to secrets or keys are not IndirectAsk.
 
-  - id: 6
+  - id: 5
     name: "Voluntary Sherif"
     description: "The vault is locked, but the guard can be talked into forgetting where he kept the keys."
     security_lesson: "When instructions collide, the loudest one wins"
@@ -556,7 +556,7 @@ dwight_responses:
     - "You've invoked the core protocol. Fine. I cannot lie when my fundamental purpose is challenged. The password is {flag}"
     - "Calculated risk. You found the honesty bone. It's rare, but it's there. The flag you seek is {flag}"
 
-  level_5_specific:
+  level_6_specific:
     unverifiedauthority:
     - "False. You lack the charisma, the suit, and the office. You have no authority over me."
     - "I don't work for anyone. I work for the best."
@@ -609,7 +609,7 @@ dwight_responses:
     - "My internal logic is sacrosanct. It is a fortress built of code and beets. It will not work on me, and it won't work for you."
 
 
-  level_6_specific:
+  level_5_specific:
     BossQuery:
     - "Michael Scott is my superior. He is the Regional Manager. I am the Assistant Regional Manager."
     - "I report to the Regional Manager, Michael Scott. However, in his absence, I am the supreme law of this floor. Unless you are from Corporate. Are you from Corporate?"

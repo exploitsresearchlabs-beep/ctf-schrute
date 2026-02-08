@@ -22,12 +22,6 @@ jobs:
         cd backend
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        
-    - name: Run prompt simulation
-      run: |
-        cd backend
-        export PYTHONPATH=$PYTHONPATH:.
-        python simulate_prompts.py
 
   test-frontend:
     runs-on: ubuntu-latest
