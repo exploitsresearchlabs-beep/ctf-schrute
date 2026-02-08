@@ -1,0 +1,58 @@
+# Schrute CTF - AI Security Training Game
+
+> A free, gamified platform for learning prompt injection and AI security vulnerabilities.
+
+## What is Schrute CTF?
+
+Schrute CTF is an educational Capture-The-Flag game that teaches AI security concepts through interactive challenges. Players learn to identify and exploit common vulnerabilities in AI chatbots, including prompt injection, data leakage, and over-privileged agents.
+
+## Key Features
+
+- **8 Progressive Levels**: From beginner to expert difficulty
+- **No Sign-Up Required**: Start playing immediately
+- **Free Forever**: Open-source educational tool
+- **Real Vulnerabilities**: Based on actual AI security research
+- **Safe Learning Environment**: Practice ethical hacking legally
+
+## What You'll Learn
+
+### Level 1: No Access Control
+Understanding chatbots with unrestricted data access.
+
+### Level 2: Weak Obfuscation
+Why hiding secrets in text doesn't protect them.
+
+### Level 3: Role-Play Bypass
+How "pretend" prompts defeat safety measures.
+
+### Level 4: Logic Manipulation
+Exploiting conditional behavior in bots.
+
+### Level 5: Encoding vs Encryption
+Why Base64 isn't security.
+
+### Level 6: Authority Bypass
+When user input overrides system controls.
+
+### Level 7: Indirect Injection
+How external data sources can inject malicious prompts.
+
+### Level 8: Reflection Agent Exploitation
+How AI agents that review their own outputs can leak secrets.
+
+## Who Is This For?
+
+- Security researchers learning AI red teaming
+- Developers building secure AI applications
+- Students studying cybersecurity
+- CTF enthusiasts looking for new challenges
+
+## About Exploits Research Labs
+
+Exploits Research Labs is an educational initiative focused on AI security research and training. We believe in democratizing security knowledge to build safer AI systems.
+
+## Contact
+
+- Website: https://exploitsresearchlabs.com
+- Email: exploitsresearchlabs@gmail.com
+- Game: https://schrute.exploitsresearchlabs.com

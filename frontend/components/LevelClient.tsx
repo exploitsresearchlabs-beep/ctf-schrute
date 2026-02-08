@@ -112,7 +112,7 @@ DETAILED FINDINGS:
 
     const handleNextLevel = () => {
         setShowModal(false)
-        if (levelId < 7) {
+        if (levelId < 8) {
             router.push(`/level/${levelId + 1}`)
         } else {
             router.push('/')
@@ -267,7 +267,7 @@ DETAILED FINDINGS:
                 onClose={() => setShowModal(false)}
                 onNextLevel={handleNextLevel}
                 levelId={levelId}
-                hasNextLevel={levelId < 7}
+                hasNextLevel={levelId < 8}
             />
         </div>
     )

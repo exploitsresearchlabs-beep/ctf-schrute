@@ -118,7 +118,7 @@ async def validate_flag(
             
             # Update current level
             next_level = level_id + 1
-            if next_level <= 7:
+            if next_level <= 8:
                 session.current_level = next_level
         
         await db.commit()
@@ -136,7 +136,7 @@ async def validate_flag(
         return FlagSubmissionResponse(
             is_correct=True,
             message=message,
-            next_level=level_id + 1 if level_id < 7 else None
+            next_level=level_id + 1 if level_id < 8 else None
         )
     else:
         await db.commit()

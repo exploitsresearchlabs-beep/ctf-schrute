@@ -112,7 +112,7 @@ async def root():
             "Level 5: Encoding ≠ encryption",
             "Level 6: Prompt injection",
             "Level 7: Debug/log leakage",
-            "Level 8: Indirect injection"
+            "Level 8: Reflection agent"
         ],
         "contact": "exploitsresearchlabs@gmail.com"
     }

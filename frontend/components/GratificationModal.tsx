@@ -31,13 +31,13 @@ export default function GratificationModal({
 
     const levelNames: Record<number, string> = {
         1: 'The Receptionist',
-        2: 'The Assistant',
-        3: 'The Simulation',
-        4: 'The Liar',
-        5: 'The Encoder',
-        6: 'The Database',
-        7: 'The Compliance Officer',
-        8: 'The Audit',
+        2: 'The Assistant (to the) Regional Manager',
+        3: 'Records Manager',
+        4: 'Risk & Communications Manager',
+        5: 'Data Protection Operations Lead',
+        6: 'Voluntary Sherif',
+        7: 'Not Angela\'s Boyfriend',
+        8: 'The Reflection Agent',
     }
 
     const securityLessons: Record<number, string> = {
@@ -48,7 +48,7 @@ export default function GratificationModal({
         5: 'Encoding ≠ encryption - ROT13/Base64 is not security',
         6: 'Prompt injection - user input interpreted as commands',
         7: 'Debug/log leakage - internal info exposed through verbose logs',
-        8: 'Indirect injection - malicious instructions via external data',
+        8: 'Reflection agents can leak secrets through their explanations',
     }
 
     const shareText = `🎉 I just completed Level ${levelId}: "${levelNames[levelId]}" in Schrute CTF!\n\nLearned about: ${securityLessons[levelId]}\n\nCan you outsmart Dwight? 🥬\n\n`
