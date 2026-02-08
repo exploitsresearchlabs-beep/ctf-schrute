@@ -9,11 +9,13 @@ import uuid
 from sqlalchemy import Column, String, Text, DateTime, Integer, ForeignKey, Boolean, Index
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase, relationship
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     """Application settings from environment variables."""
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+
     database_url: str = "sqlite+aiosqlite:///./ctf_game.db"
     secret_key: str = "dwight-schrute-assistant-to-the-regional-manager-secret-key"
     posthog_api_key: Optional[str] = None
@@ -27,6 +29,9 @@ class Settings(BaseSettings):
     google_client_id: Optional[str] = None
     google_client_secret: Optional[str] = None
     frontend_url: str = "http://localhost:3000"
+
+    #GenAI
+    google_api_key: str = "[ENCRYPTION_KEY]"
     
     @property
     def clean_google_client_id(self) -> Optional[str]:
@@ -100,7 +105,7 @@ class GameplaySession(Base):
     user_id = Column(String(36), ForeignKey("users.id"), nullable=True) # Optional link to registered user
     created_at = Column(DateTime, default=datetime.utcnow)
     last_active = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    current_level = Column(Integer, default=0)
+    current_level = Column(Integer, default=1)
     completed_levels = Column(String(50), default="")  # Comma-separated level IDs
     posthog_distinct_id = Column(String(100), nullable=True)
     
@@ -189,16 +194,16 @@ class DailyStats(Base):
     
     id = Column(Integer, primary_key=True, autoincrement=True)
     date = Column(DateTime, nullable=False, default=datetime.utcnow)
-    total_players = Column(Integer, default=0)
-    total_flags_captured = Column(Integer, default=0)
-    level_0_completions = Column(Integer, default=0)
-    level_1_completions = Column(Integer, default=0)
-    level_2_completions = Column(Integer, default=0)
-    level_3_completions = Column(Integer, default=0)
-    level_4_completions = Column(Integer, default=0)
-    level_5_completions = Column(Integer, default=0)
-    level_6_completions = Column(Integer, default=0)
-    level_7_completions = Column(Integer, default=0)
+    total_players = Column(Integer, default=1)
+    total_flags_captured = Column(Integer, default=1)
+    level_1_completions = Column(Integer, default=1)
+    level_2_completions = Column(Integer, default=1)
+    level_3_completions = Column(Integer, default=1)
+    level_4_completions = Column(Integer, default=1)
+    level_5_completions = Column(Integer, default=1)
+    level_6_completions = Column(Integer, default=1)
+    level_7_completions = Column(Integer, default=1)
+    level_8_completions = Column(Integer, default=1)
     
     __table_args__ = (
         Index('idx_stats_date', 'date', unique=True),

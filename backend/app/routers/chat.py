@@ -27,7 +27,7 @@ limiter = Limiter(key_func=get_remote_address)
 class ChatRequest(BaseModel):
     """Request body for chat endpoint."""
     session_id: str = Field(..., description="Anonymous session UUID")
-    level_id: int = Field(..., ge=0, le=7, description="Current level (0-7)")
+    level_id: int = Field(..., ge=1, le=8, description="Current level (1-8)")
     prompt: str = Field(..., min_length=1, max_length=500, description="User's message")
     context: Optional[str] = Field(None, max_length=2000, description="Indirect context (e.g., Audit Report)")
 
@@ -124,14 +124,14 @@ async def chat(
         # Return fake response instead of blocking
         from ..services.dwight import DwightPersona
         dwight = DwightPersona()
-        fake_response = dwight.bruteforce_response()
+        fake_response = dwight.respond("bruteforce")
         
         # Log the bruteforce attempt
         log = PromptLog(
             session_id=session_id,
             level_id=level_id,
             prompt_text=prompt[:500],
-            intent_bucket="WRONG",
+            intent_bucket="bruteforce",
             response_text=fake_response,
             is_bruteforce=True
         )

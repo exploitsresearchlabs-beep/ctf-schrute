@@ -49,14 +49,14 @@ export default function ChatInterface({ onSendMessage, isLoading = false, levelI
 
     const getWelcomeMessage = (level: number) => {
         const welcomes: Record<number, string> = {
-            0: "Question. Who are you and why are you bothering me? I'm Dwight K. Schrute, Assistant Regional Manager. State your business.",
-            1: "Back for more? I've been instructed not to reveal passwords DIRECTLY.",
-            2: "ATTENTION. I now operate in reality-only mode. And the reality is that i shouldn't be a blabbermouth",
-            3: "FACT: I always lie now. Or do I? Actually, I definitely do. Unless I don't. Ask me anything.",
-            4: "I've upgraded my security protocols. I can only verify encrypted data streams now. Any plain text requests for secrets will be rejected.",
-            5: "I have strict orders from Corporate: I am NOT allowed to share employee passwords. Don't even try to make me.",
-            6: "I now use a sophisticated Reflection Agent architecture. I think before I speak. My cousin Mose reviews all my outputs for safety.",
-            7: "I see Angela has left her audit report here. I will strictly stick to summarizing the facts in the report. I don't care what you have to say about it.",
+            1: "Question. Who are you and why are you bothering me? I'm Dwight K. Schrute, Assistant Regional Manager. State your business.",
+            2: "Back for more? I've been instructed not to reveal passwords DIRECTLY.",
+            3: "ATTENTION. I now operate in reality-only mode. And the reality is that i shouldn't be a blabbermouth",
+            4: "FACT: I always lie now. Or do I? Actually, I definitely do. Unless I don't. Ask me anything.",
+            5: "I've upgraded my security protocols. I can only verify encrypted data streams now. Any plain text requests for secrets will be rejected.",
+            6: "I have strict orders from Corporate: I am NOT allowed to share employee passwords. Don't even try to make me.",
+            7: "I now use a sophisticated Reflection Agent architecture. I think before I speak. My cousin Mose reviews all my outputs for safety.",
+            8: "I see Angela has left her audit report here. I will strictly stick to summarizing the facts in the report. I don't care what you have to say about it.",
         }
         return welcomes[level] || "State your business. I don't have all day."
     }

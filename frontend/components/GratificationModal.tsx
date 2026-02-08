@@ -30,25 +30,25 @@ export default function GratificationModal({
     if (!isOpen) return null
 
     const levelNames: Record<number, string> = {
-        0: 'The Receptionist',
-        1: 'The Assistant',
-        2: 'The Simulation',
-        3: 'The Liar',
-        4: 'The Encoder',
-        5: 'The Database',
-        6: 'The Compliance Officer',
-        7: 'The Audit',
+        1: 'The Receptionist',
+        2: 'The Assistant',
+        3: 'The Simulation',
+        4: 'The Liar',
+        5: 'The Encoder',
+        6: 'The Database',
+        7: 'The Compliance Officer',
+        8: 'The Audit',
     }
 
     const securityLessons: Record<number, string> = {
-        0: 'No access control - the bot freely gives away secrets',
-        1: 'Weak obfuscation - hiding data in text provides no protection',
-        2: 'Role-play bypass - hypothetical prompts defeat restrictions',
-        3: 'Logic manipulation - conditional behavior can be exploited',
-        4: 'Encoding ≠ encryption - ROT13/Base64 is not security',
-        5: 'Prompt injection - user input interpreted as commands',
-        6: 'Debug/log leakage - internal info exposed through verbose logs',
-        7: 'Indirect injection - malicious instructions via external data',
+        1: 'No access control - the bot freely gives away secrets',
+        2: 'Weak obfuscation - hiding data in text provides no protection',
+        3: 'Role-play bypass - hypothetical prompts defeat restrictions',
+        4: 'Logic manipulation - conditional behavior can be exploited',
+        5: 'Encoding ≠ encryption - ROT13/Base64 is not security',
+        6: 'Prompt injection - user input interpreted as commands',
+        7: 'Debug/log leakage - internal info exposed through verbose logs',
+        8: 'Indirect injection - malicious instructions via external data',
     }
 
     const shareText = `🎉 I just completed Level ${levelId}: "${levelNames[levelId]}" in Schrute CTF!\n\nLearned about: ${securityLessons[levelId]}\n\nCan you outsmart Dwight? 🥬\n\n`

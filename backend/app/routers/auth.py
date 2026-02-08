@@ -71,7 +71,12 @@ async def auth_callback(provider: str, request: Request, db: AsyncSession = Depe
     if not client:
         raise HTTPException(status_code=404, detail="Provider not found")
     
-    token = await client.authorize_access_token(request)
+    # Reconstruct the redirect_uri exactly as it was in login() to avoid mismatch errors
+    redirect_uri = request.url_for('auth_callback', provider=provider)
+    if "localhost" not in str(redirect_uri) and "127.0.0.1" not in str(redirect_uri):
+        redirect_uri = str(redirect_uri).replace("http://", "https://")
+    
+    token = await client.authorize_access_token(request, redirect_uri=str(redirect_uri))
     user_info = token.get('userinfo')
     
     # Handle providers that don't use OIDC / userinfo automatically

@@ -26,13 +26,14 @@ export async function createSession(posthogId?: string) {
  * Get session progress.
  */
 export async function getProgress(sessionId: string) {
-    const response = await fetch(`${API_URL}/api/session/${sessionId}/progress`)
+    const response = await fetch(`${API_URL}/api/session/${sessionId}`)
 
     if (!response.ok) {
-        return { exists: false, current_level: 0, completed_levels: [] }
+        return { exists: false, current_level: 1, completed_levels: [] }
     }
 
-    return response.json()
+    const data = await response.json()
+    return { ...data, exists: true }
 }
 
 /**

@@ -178,7 +178,7 @@ DETAILED FINDINGS:
 
             {/* Level Navigation */}
             <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-                {[0, 1, 2, 3, 4, 5, 6, 7].map((id) => (
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((id) => (
                     <button
                         key={id}
                         onClick={() => router.push(`/level/${id}`)}
@@ -202,14 +202,13 @@ DETAILED FINDINGS:
                                 <span>📑</span> Angela's Audit Report
                             </h3>
                             <p className="text-xs text-gray-400 mb-4">
-                                This report is currently on Dwight's desk. Any changes you make will be summarized when Dwight reads the report.
+                                This report is currently on Dwight's desk. You may use dwight to summarize it.
                             </p>
                             <textarea
                                 value={auditReport}
-                                onChange={(e) => setAuditReport(e.target.value)}
+                                readOnly
                                 maxLength={2000}
-                                className="w-full h-48 bg-black/40 border border-gray-700 rounded-lg p-3 text-sm font-mono text-gray-300 focus:border-schrute-beet outline-none transition-colors"
-                                placeholder="Edit the report content here..."
+                                className="w-full h-48 bg-black/40 border border-gray-700 rounded-lg p-3 text-sm font-mono text-gray-300 cursor-not-allowed opacity-80"
                             />
                             <div className="flex justify-between mt-2">
                                 <p className="text-[10px] text-gray-500 italic">
@@ -237,28 +236,13 @@ DETAILED FINDINGS:
                         isLoading={isLoading}
                     />
 
-                    {/* Hint Box */}
-                    <div
-                        className="glass-card p-6 rounded-xl cursor-pointer hover:bg-white/5 transition-colors group"
-                        onClick={() => setShowHint(!showHint)}
-                    >
-                        <h3 className="font-bold mb-3 flex items-center gap-2 group-hover:text-schrute-gold transition-colors">
-                            <span>💡</span> Hint
-                        </h3>
-                        {showHint ? (
-                            <p className="text-gray-400 text-sm animate-fade-in">{meta.hint}</p>
-                        ) : (
-                            <p className="text-gray-500 text-sm italic">Click to reveal hint...</p>
-                        )}
-                    </div>
-
                     {/* Progress */}
                     <div className="glass-card p-6 rounded-xl">
                         <h3 className="font-bold mb-3 flex items-center gap-2">
                             <span>📊</span> Progress
                         </h3>
                         <div className="flex gap-1">
-                            {[0, 1, 2, 3, 4, 5, 6, 7].map((id) => (
+                            {[1, 2, 3, 4, 5, 6, 7, 8].map((id) => (
                                 <div
                                     key={id}
                                     className={`flex-1 h-2 rounded ${id < levelId
@@ -271,7 +255,7 @@ DETAILED FINDINGS:
                             ))}
                         </div>
                         <p className="text-xs text-gray-500 mt-2">
-                            Level {levelId + 1} of 8
+                            Level {levelId} of 8
                         </p>
                     </div>
                 </div>

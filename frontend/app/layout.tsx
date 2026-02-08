@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     creator: 'Exploits Research Labs',
     publisher: 'Exploits Research Labs',
     openGraph: {
-        title: 'Schrute CTF - Prompt Injection Training',
+        title: 'Schrute CTF',
         description: 'Can you outsmart Dwight? Learn chatbot security vulnerabilities through 7 challenging levels.',
         url: 'https://ctf.exploitsresearchlabs.com',
         siteName: 'Schrute CTF',
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Schrute CTF - Prompt Injection Training',
+        title: 'Schrute CTF',
         description: 'Can you outsmart Dwight? Learn chatbot security vulnerabilities.',
         creator: '@exploitslabs', // Placeholder handle
         images: ['/og-image.png'],

@@ -41,7 +41,7 @@ export default function HomeClient() {
             Cookies.set('ctf_session_id', session.session_id, { expires: 365 })
             localStorage.setItem('ctf_session_id', session.session_id)
             setSessionId(session.session_id)
-            setCurrentLevel(0)
+            setCurrentLevel(1)
             setCompletedLevels([])
         } catch (error) {
             console.error('Failed to initialize session:', error)
@@ -91,12 +91,12 @@ export default function HomeClient() {
                         className="btn-primary text-lg px-8 py-4"
                         disabled={isLoading}
                     >
-                        {isLoading ? 'Loading...' : currentLevel > 0 ? `Continue Level ${currentLevel}` : 'Start Game'}
+                        {isLoading ? 'Loading...' : currentLevel > 1 ? `Continue Level ${currentLevel}` : 'Start Game'}
                     </button>
 
                     {completedLevels.length > 0 && (
                         <span className="badge badge-success">
-                            {completedLevels.length}/7 Levels Complete
+                            {completedLevels.length}/8 Levels Complete
                         </span>
                     )}
                 </div>
@@ -132,7 +132,7 @@ export default function HomeClient() {
 
             {/* Levels Overview */}
             <section className="mb-16">
-                <h2 className="text-3xl font-bold text-center mb-8 text-schrute-gold">7 Levels of Security</h2>
+                <h2 className="text-3xl font-bold text-center mb-8 text-schrute-gold">8 Levels of Security</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {LEVELS.map((level) => {
                         const isUnlocked = level.id <= currentLevel || completedLevels.includes(level.id)
@@ -205,14 +205,14 @@ export default function HomeClient() {
                     <h2 className="text-2xl font-bold mb-4">Ready to Test Your Skills?</h2>
                     <p className="text-gray-400 mb-6">
                         No sign-up required. Your progress is saved locally.
-                        Complete all 7 levels to become a prompt injection expert!
+                        Complete all 8 levels to become a prompt injection expert!
                     </p>
                     <button
                         onClick={handleStartGame}
                         className="btn-primary"
                         disabled={isLoading}
                     >
-                        {currentLevel > 0 ? 'Continue Playing' : 'Begin Challenge'}
+                        {currentLevel > 1 ? 'Continue Playing' : 'Begin Challenge'}
                     </button>
                 </div>
             </section>
