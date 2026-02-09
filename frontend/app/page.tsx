@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     title: 'Schrute CTF - Learn Prompt Injection Security',
     description: 'Master AI security with Schrute CTF. An educational game teaching prompt injection, chatbot vulnerabilities, and LLM red teaming through interactive challenges.',
     alternates: {
-        canonical: 'https://ctf.exploitsresearchlabs.com',
+        canonical: 'https://schrute.exploitsresearchlabs.com',
     },
 }
 

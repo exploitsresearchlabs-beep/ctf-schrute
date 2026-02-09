@@ -5,7 +5,7 @@ export const metadata: Metadata = {
     title: 'Learn AI Security - Prompt Injection & LLM Vulnerabilities',
     description: 'A comprehensive guide to AI security concepts. Learn about prompt injection, LLM vulnerabilities, and how to protect AI chatbots from attacks.',
     alternates: {
-        canonical: 'https://ctf.exploitsresearchlabs.com/learn',
+        canonical: 'https://schrute.exploitsresearchlabs.com/learn',
     },
 }
 

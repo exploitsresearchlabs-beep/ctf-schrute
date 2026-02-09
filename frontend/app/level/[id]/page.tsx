@@ -36,7 +36,7 @@ export async function generateMetadata(
         openGraph: {
             title,
             description,
-            url: `https://ctf.exploitsresearchlabs.com/level/${level.id}${isCompleted ? '?completed=true' : ''}`,
+            url: `https://schrute.exploitsresearchlabs.com/level/${level.id}${isCompleted ? '?completed=true' : ''}`,
             images: ['/og-image.png'], // Add explicitly to ensure it shows up
         }
     }
@@ -58,7 +58,7 @@ export default function LevelPage({ params }: Props) {
             'isPartOf': {
                 '@type': 'EducationalGame',
                 'name': 'Schrute CTF',
-                'url': 'https://ctf.exploitsresearchlabs.com'
+                'url': 'https://schrute.exploitsresearchlabs.com'
             }
         },
         {
@@ -69,13 +69,13 @@ export default function LevelPage({ params }: Props) {
                     '@type': 'ListItem',
                     'position': 1,
                     'name': 'Home',
-                    'item': 'https://ctf.exploitsresearchlabs.com'
+                    'item': 'https://schrute.exploitsresearchlabs.com'
                 },
                 {
                     '@type': 'ListItem',
                     'position': 2,
                     'name': `Level ${level.id}`,
-                    'item': `https://ctf.exploitsresearchlabs.com/level/${level.id}`
+                    'item': `https://schrute.exploitsresearchlabs.com/level/${level.id}`
                 }
             ]
         }

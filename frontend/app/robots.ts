@@ -25,7 +25,7 @@ export default function robots(): MetadataRoute.Robots {
                 allow: '/',
             },
         ],
-        sitemap: 'https://ctf.exploitsresearchlabs.com/sitemap.xml',
-        host: 'https://ctf.exploitsresearchlabs.com',
+        sitemap: 'https://schrute.exploitsresearchlabs.com/sitemap.xml',
+        host: 'https://schrute.exploitsresearchlabs.com',
     }
 }

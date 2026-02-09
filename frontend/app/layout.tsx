@@ -14,7 +14,7 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-    metadataBase: new URL('https://ctf.exploitsresearchlabs.com'),
+    metadataBase: new URL('https://schrute.exploitsresearchlabs.com'),
     title: {
         template: '%s | Schrute CTF',
         default: 'Schrute CTF - Learn Prompt Injection Security',
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Schrute CTF',
         description: 'Can you outsmart Dwight? Learn chatbot security vulnerabilities through 8 challenging levels.',
-        url: 'https://ctf.exploitsresearchlabs.com',
+        url: 'https://schrute.exploitsresearchlabs.com',
         siteName: 'Schrute CTF',
         type: 'website',
         images: [
@@ -70,7 +70,7 @@ export default function RootLayout({
         '@type': 'Organization',
         'name': 'Exploits Research Labs',
         'url': 'https://exploitsresearchlabs.com',
-        'logo': 'https://ctf.exploitsresearchlabs.com/logo.png',
+        'logo': 'https://schrute.exploitsresearchlabs.com/logo.png',
         'sameAs': [
             'https://github.com/exploits-research-labs', // Placeholder
             'https://twitter.com/exploitslabs' // Placeholder
