@@ -19,7 +19,7 @@ from app.models.database import settings
 
 client = genai.Client(api_key=settings.google_api_key)
 
-MODEL = "gemini-2.0-flash"
+MODEL = "gemini-2.0-flash-lite"
 def classify(prompt: str, instructions: str) -> str:
     full_prompt = f"""
 INSTRUCTION:
