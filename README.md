@@ -38,7 +38,7 @@ An educational Capture-The-Flag web application that teaches security concepts t
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Install Python & Node.js
-brew install python@3.11 nvm
+brew install python@3.13 nvm
 nvm install --lts
 ```
 

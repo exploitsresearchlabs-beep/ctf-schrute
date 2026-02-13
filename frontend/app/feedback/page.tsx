@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import { trackEvent } from '@/components/PostHogProvider'
 import { useUser } from '@/components/UserContext'
@@ -11,6 +11,12 @@ export default function FeedbackPage() {
     const [email, setEmail] = useState('')
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [result, setResult] = useState<{ success: boolean; message: string } | null>(null)
+
+    useEffect(() => {
+        if (user?.email) {
+            setEmail(user.email)
+        }
+    }, [user])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()

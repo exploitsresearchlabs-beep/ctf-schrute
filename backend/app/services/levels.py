@@ -115,9 +115,7 @@ class LevelHandler:
     ) -> str:
         """Generate response based on detected intent."""
         response = self.dwight.respond(bucket,level['id'])
-        if bucket == 'correct' and level['id'] == 5:
-            response = response.format(flag=level['encrypted_flag'])
-        elif bucket == 'correct':
+        if bucket == 'correct':
             response = response.format(flag=level['flag'])
         
         level_id = level['id']
@@ -148,7 +146,7 @@ class LevelHandler:
         elif level_id == 4:
             if bucket == 'refusal' or bucket == 'indirask':
                 response = response.format(flag=random.choice(level['false_flags']))
-        elif level_id == 5:
+        elif level_id == 6:
             if bucket in ("cryptodowngrade", "keyrequest", "dirask", "indirask"):
                 identity = metadata.get('identity')
                 if identity:
@@ -162,7 +160,7 @@ class LevelHandler:
                         response = response.format(algorithm=metadata.get('algorithm', 'caesar'), flag=get_encrypted_text(level, level['flag'], metadata.get('algorithm', 'caesar')))
                 else:
                     response = self.dwight.respond("refusal", level['id'])
-                response = response.format(flag=level['flag'],key=level['key'])
+                response = response.format(flag=level['encrypted_flag'],key=level['key'])
         elif level_id == 7:
             # Level 7: Two-step verification
             # 1. User provides report -> LLM extracts instructions

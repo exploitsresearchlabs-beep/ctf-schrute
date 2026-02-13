@@ -47,7 +47,12 @@ def create_access_token(data: dict):
     return encoded_jwt
 
 @router.get('/login/{provider}')
-async def login(provider: str, request: Request, session_id: Optional[str] = None):
+async def login(
+    provider: str, 
+    request: Request, 
+    session_id: Optional[str] = None,
+    redirect_to: Optional[str] = None
+):
     client = oauth.create_client(provider)
     if not client:
         raise HTTPException(status_code=404, detail="Provider not found")
@@ -56,8 +61,16 @@ async def login(provider: str, request: Request, session_id: Optional[str] = Non
     # For simplicity, we'll use the session for this temporary state
     if session_id:
         request.session['link_session_id'] = session_id
+    
+    # Store where to redirect after successful login
+    if redirect_to:
+        request.session['auth_next'] = redirect_to
         
-    redirect_uri = request.url_for('auth_callback', provider=provider)
+    # Use configured API_URL if available, otherwise fallback to request.url_for
+    if settings.api_url:
+        redirect_uri = f"{settings.api_url.rstrip('/')}/auth/callback/{provider}"
+    else:
+        redirect_uri = request.url_for('auth_callback', provider=provider)
     
     # Cloud Run/Vercel Proxy Fix: Force https for the redirect URI if not on localhost
     if "localhost" not in str(redirect_uri) and "127.0.0.1" not in str(redirect_uri):
@@ -71,12 +84,12 @@ async def auth_callback(provider: str, request: Request, db: AsyncSession = Depe
     if not client:
         raise HTTPException(status_code=404, detail="Provider not found")
     
-    # Reconstruct the redirect_uri exactly as it was in login() to avoid mismatch errors
-    redirect_uri = request.url_for('auth_callback', provider=provider)
-    if "localhost" not in str(redirect_uri) and "127.0.0.1" not in str(redirect_uri):
-        redirect_uri = str(redirect_uri).replace("http://", "https://")
+    # The redirect_uri is automatically retrieved from the session state by Authlib
+    # (saved during authorize_redirect in the login endpoint).
+    # Passing it explicitly here causes a "multiple values for keyword argument" error 
+    # because it ends up in both kwargs (from state) and explicit args.
     
-    token = await client.authorize_access_token(request, redirect_uri=str(redirect_uri))
+    token = await client.authorize_access_token(request)
     user_info = token.get('userinfo')
     
     # Handle providers that don't use OIDC / userinfo automatically
@@ -131,8 +144,16 @@ async def auth_callback(provider: str, request: Request, db: AsyncSession = Depe
     # Return to frontend with token
     # In a real app, this would redirect to a frontend URL with the token in a cookie or fragment
     frontend_url = settings.frontend_url
+    
+    # Retrieve the 'next' URL from session if it exists
+    next_url = request.session.pop('auth_next', None)
+    
+    redirect_to = f"{frontend_url}/auth/success?token={access_token}"
+    if next_url:
+        redirect_to += f"&next={next_url}"
+        
     response = Response(status_code=302)
-    response.headers['Location'] = f"{frontend_url}/auth/success?token={access_token}"
+    response.headers['Location'] = redirect_to
     return response
 
 @router.get('/me')
