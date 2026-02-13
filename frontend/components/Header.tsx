@@ -30,7 +30,7 @@ export default function Header() {
                 <nav className="hidden md:flex items-center space-x-6">
                     <Link href="/" className="text-gray-300 hover:text-white transition-colors">Home</Link>
                     <Link href="/about" className="text-gray-300 hover:text-white transition-colors">About</Link>
-                    <Link href="/level/0" className="text-gray-300 hover:text-white transition-colors">Play</Link>
+                    <Link href="/level/1" className="text-gray-300 hover:text-white transition-colors">Play</Link>
                     <Link href="/feedback" className="text-gray-300 hover:text-white transition-colors">Feedback</Link>
                     <a
                         href="mailto:exploitsresearchlabs@gmail.com"

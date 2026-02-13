@@ -26,6 +26,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     const [loading, setLoading] = useState(true)
 
     const refreshUser = useCallback(async () => {
+        setLoading(true)
         const token = Cookies.get('auth_token')
         if (!token) {
             setUser(null)

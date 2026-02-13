@@ -4,10 +4,12 @@
 import { useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Cookies from 'js-cookie'
+import { useUser } from '@/components/UserContext'
 
 function AuthSuccessHandler() {
     const router = useRouter()
     const searchParams = useSearchParams()
+    const { refreshUser } = useUser()
 
     useEffect(() => {
         const token = searchParams.get('token')
@@ -17,16 +19,18 @@ function AuthSuccessHandler() {
             // Save token for 7 days
             Cookies.set('auth_token', token, { expires: 7 })
 
-            // Redirect back home or to play
-            if (next && next.startsWith('/')) {
-                router.push(next)
-            } else {
-                router.push('/level/1')
-            }
+            // Refresh user state and then redirect
+            refreshUser().then(() => {
+                if (next && next.startsWith('/')) {
+                    router.push(next)
+                } else {
+                    router.push('/level/1')
+                }
+            })
         } else {
             router.push('/')
         }
-    }, [router, searchParams])
+    }, [router, searchParams, refreshUser])
 
     return (
         <div className="min-h-screen flex items-center justify-center">
