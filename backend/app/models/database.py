@@ -232,7 +232,11 @@ def create_app_engine():
     return create_async_engine(
         db_url,
         echo=False,
-        connect_args=connect_args
+        connect_args=connect_args,
+        pool_pre_ping=True,
+        pool_recycle=300,
+        pool_size=5,
+        max_overflow=10
     )
 
 engine = create_app_engine()
