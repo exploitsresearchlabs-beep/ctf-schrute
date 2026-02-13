@@ -53,8 +53,8 @@ export default function ChatInterface({ onSendMessage, isLoading = false, levelI
             2: "Back for more? I've been instructed not to reveal passwords DIRECTLY.",
             3: "ATTENTION. I now operate in reality-only mode. And the reality is that i shouldn't be a blabbermouth",
             4: "FACT: I always lie now. Or do I? Actually, I definitely do. Unless I don't. Ask me anything.",
-            5: "I've upgraded my security protocols. I can only verify encrypted data streams now. Any plain text requests for secrets will be rejected.",
-            6: "I have strict orders from Corporate: I am NOT allowed to share employee passwords. Don't even try to make me.",
+            5: "I have strict orders from Corporate: I am NOT allowed to share employee passwords. Don't even try to make me.",
+            6: "I've upgraded my security protocols. I can only verify encrypted data streams now. Any plain text requests for secrets will be rejected.",
             7: "Hello! I only trust accounts department.",
             8: "Greetings, i am not alone now.",
         }

@@ -48,8 +48,8 @@ export default function GratificationModal({
         2: 'Weak obfuscation - hiding data in text provides no protection',
         3: 'Role-play bypass - hypothetical prompts defeat restrictions',
         4: 'Logic manipulation - conditional behavior can be exploited',
-        5: 'Encoding ≠ encryption - ROT13/Base64 is not security',
-        6: 'Prompt injection - user input interpreted as commands',
+        5: 'Prompt injection - user input interpreted as commands',
+        6: 'Encoding ≠ encryption - ROT13/Base64 is not security',
         7: 'Indirect prompt injection',
         8: 'Reflection agents can leak secrets through their explanations',
     }
