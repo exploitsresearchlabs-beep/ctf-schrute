@@ -35,8 +35,6 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     """Response from chat endpoint."""
     response: str = Field(..., description="Dwight's response")
-    intent_bucket: str = Field(..., description="Detected intent: CORRECT, CLOSE, WRONG")
-    is_rate_limited: bool = Field(default=False, description="Whether response was rate limited")
 
 
 async def check_bruteforce(
@@ -107,8 +105,6 @@ async def chat(
     if len(prompt) < min_length:
         return ChatResponse(
             response="Speak up! I can't hear mumbling.",
-            intent_bucket="WRONG",
-            is_rate_limited=False
         )
     
     # Verify session exists before proceeding (to avoid FK violation)
@@ -139,9 +135,7 @@ async def chat(
         await db.commit()
         
         return ChatResponse(
-            response=fake_response,
-            intent_bucket="WRONG",
-            is_rate_limited=True
+            response=fake_response
         )
     
     # Process the prompt through level handler
@@ -160,9 +154,7 @@ async def chat(
     await db.commit()
     
     return ChatResponse(
-        response=response,
-        intent_bucket=intent_bucket,
-        is_rate_limited=False
+        response=response
     )
 
 

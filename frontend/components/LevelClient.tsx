@@ -7,7 +7,7 @@ import ChatInterface from '@/components/ChatInterface'
 import FlagSubmission from '@/components/FlagSubmission'
 import GratificationModal from '@/components/GratificationModal'
 import { sendChat, validateFlag, getLevel, getProgress } from '@/lib/api'
-import { trackLevelStarted, trackPromptSubmitted, trackFlagSubmitted, trackLevelCompleted } from '@/components/PostHogProvider'
+import { trackLevelStarted, trackFlagSubmitted, trackLevelCompleted } from '@/components/PostHogProvider'
 import { LEVELS } from '@/lib/levels'
 
 interface LevelClientProps {
@@ -90,7 +90,6 @@ DETAILED FINDINGS:
         // Pass auditReport as context if Level 7
         const context = levelId === 7 ? auditReport : undefined
         const response = await sendChat(sessionId, levelId, message, context)
-        trackPromptSubmitted(levelId, response.intent_bucket)
         return response
     }
 
