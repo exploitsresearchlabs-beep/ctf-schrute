@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     google_client_id: Optional[str] = None
     google_client_secret: Optional[str] = None
     frontend_url: str = "http://localhost:3000"
+    api_url: Optional[str] = None
 
     #GenAI
     google_api_key: str = "[ENCRYPTION_KEY]"

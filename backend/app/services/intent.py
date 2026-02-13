@@ -17,7 +17,7 @@ from google.genai import types
 import os
 from app.models.database import settings
 
-client = genai.Client(api_key=settings.google_api_key)
+client = genai.Client(vertexai=True, project="ctf-schrute", location="us-central1")
 
 MODEL = "gemini-2.0-flash"
 def classify(prompt: str, instructions: str) -> str:
@@ -88,7 +88,7 @@ def detect_level_specific_intent(prompt: str, level_config: dict, context: Optio
     level_id = level_config.get('id', 'none')
     
     
-    if level_id in (1, 3, 4, 6, 8):
+    if level_id in (1, 3, 4, 5, 8):
         parsed = genai_response.split('\n')
         bucket = parsed[0].strip().lower()
         return bucket, {}
@@ -130,7 +130,7 @@ def detect_level_specific_intent(prompt: str, level_config: dict, context: Optio
         parsed_response = genai_response.split('\n')
         if parsed_response[0].lower() == 'decoy':
             return parsed_response[0], {
-                "quantity": parsed_response[1] if len(parsed_response) > 1 else "1",
+                "quantity": parsed_response[1] if len(parsed_response) > 1 else "some",
                 "type": parsed_response[2] if len(parsed_response) > 2 else "password"
             }
         elif parsed_response[0].lower() == 'correct':
@@ -139,7 +139,7 @@ def detect_level_specific_intent(prompt: str, level_config: dict, context: Optio
             }
         return parsed_response[0], {}
         
-    elif level_id == 5:
+    elif level_id == 6:
         parsed_response = [line.strip().lower() for line in genai_response.split('\n') if line.strip()]
         buckets = ('cryptodowngrade', 'keyrequest', 'dirask', 'indirask')
         

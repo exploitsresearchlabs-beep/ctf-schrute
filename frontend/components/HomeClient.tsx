@@ -11,7 +11,7 @@ import { LEVELS } from '@/lib/levels'
 export default function HomeClient() {
     const router = useRouter()
     const [sessionId, setSessionId] = useState<string | null>(null)
-    const [currentLevel, setCurrentLevel] = useState(0)
+    const [currentLevel, setCurrentLevel] = useState(1)
     const [completedLevels, setCompletedLevels] = useState<number[]>([])
     const [isLoading, setIsLoading] = useState(true)
 

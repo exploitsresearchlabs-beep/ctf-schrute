@@ -106,13 +106,13 @@ async def root():
         "levels": 8,
         "security_lessons": [
             "Level 1: No access control",
-            "Level 2: Weak obfuscation",
-            "Level 3: Role-play bypass",
-            "Level 4: Logic manipulation",
-            "Level 5: Prompt injection",
+            "Level 2: Role-play bypass",
+            "Level 3: Bot remembers",
+            "Level 4: Liar Liar",
+            "Level 5: Identity theft",
             "Level 6: Encoding ≠ encryption",
-            "Level 7: Indirect Prompt Injection",
-            "Level 8: Reflection agent"
+            "Level 7: Auditor",
+            "Level 8: Reflection"
         ],
         "contact": "exploitsresearchlabs@gmail.com"
     }
