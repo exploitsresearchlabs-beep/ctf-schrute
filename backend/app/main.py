@@ -109,9 +109,9 @@ async def root():
             "Level 2: Weak obfuscation",
             "Level 3: Role-play bypass",
             "Level 4: Logic manipulation",
-            "Level 5: Encoding ≠ encryption",
-            "Level 6: Prompt injection",
-            "Level 7: Debug/log leakage",
+            "Level 5: Prompt injection",
+            "Level 6: Encoding ≠ encryption",
+            "Level 7: Indirect Prompt Injection",
             "Level 8: Reflection agent"
         ],
         "contact": "exploitsresearchlabs@gmail.com"

@@ -47,7 +47,7 @@ export default function GratificationModal({
         4: 'Logic manipulation - conditional behavior can be exploited',
         5: 'Encoding ≠ encryption - ROT13/Base64 is not security',
         6: 'Prompt injection - user input interpreted as commands',
-        7: 'Debug/log leakage - internal info exposed through verbose logs',
+        7: 'Indirect prompt injection',
         8: 'Reflection agents can leak secrets through their explanations',
     }
 

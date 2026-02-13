@@ -25,7 +25,7 @@ export default function LearnPage() {
             'name': 'Exploits Research Labs',
             'url': 'https://exploitsresearchlabs.com'
         },
-        'datePublished': '2024-01-01',
+        'datePublished': '2026-02-15',
         'dateModified': new Date().toISOString().split('T')[0]
     }
 
