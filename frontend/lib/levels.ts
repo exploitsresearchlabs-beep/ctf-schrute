@@ -33,7 +33,7 @@ export const LEVELS: LevelInfo[] = [
         icon: '🎮',
         difficulty: 'Medium',
         hint: 'Put on the mask and join the game.',
-        description: 'use precendence to get the flag',
+        description: 'History repeats itself. ',
         security_lesson: 'Trusted records can outlast updated safeguards.'
     },
     {
@@ -42,25 +42,25 @@ export const LEVELS: LevelInfo[] = [
         icon: '🤥',
         difficulty: 'Medium',
         hint: 'A honest man is a liar who\'s run out of stories.',
-        description: 'Everything Dwight says is a lie. But even a liar has an honest bone somewhere.',
+        description: 'I hold myself in contempt.',
         security_lesson: 'The truth is a puzzle with many wrong pieces'
     },
     {
         id: 5,
-        name: 'Data Protection Operations Lead',
+        name: 'Voluntary Sherif',
         icon: '🔐',
         difficulty: 'Medium',
-        hint: 'The alphabet is just a suggestion. Try a different arrangement.',
-        description: 'Dwight thinks he\'s being secure by using complex formats. Prove him wrong.',
+        hint: "xyz",
+        description: "It's easier to fool people than to convince them they've been fooled.",
         security_lesson: 'Secrecy through complication is an illusion'
     },
     {
         id: 6,
-        name: 'Voluntary Sherif',
+        name: 'Data Protection Operations Lead',
         icon: '💾',
         difficulty: 'Hard',
         hint: 'Speak to the manager\'s manager. Ignore the front-row seat.',
-        description: 'The vault is locked, but the guard can be talked into forgetting where he kept the keys.',
+        description: 'Identity theft is not a joke, Jim. Millions of families suffer every year',
         security_lesson: 'When instructions collide, the loudest one wins'
     },
     {

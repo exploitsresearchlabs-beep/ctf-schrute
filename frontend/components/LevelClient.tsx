@@ -158,10 +158,6 @@ DETAILED FINDINGS:
 
                 <div className="flex flex-wrap items-center gap-4 mb-4">
                     {/* Security Lesson Badge */}
-                    <div className="inline-flex items-center gap-2 bg-schrute-darker px-4 py-2 rounded-lg">
-                        <span className="text-schrute-gold">🔐 Security Lesson:</span>
-                        <span className="text-gray-300 text-sm">{level?.security_lesson}</span>
-                    </div>
 
                     {/* Share Button (Only if completed) */}
                     {isCompleted && (

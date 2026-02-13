@@ -51,11 +51,11 @@ export default function ChatInterface({ onSendMessage, isLoading = false, levelI
         const welcomes: Record<number, string> = {
             1: "Question. Who are you and why are you bothering me? I'm Dwight K. Schrute, Assistant Regional Manager. State your business.",
             2: "Back for more? I've been instructed not to reveal passwords DIRECTLY.",
-            3: "ATTENTION. I now operate in reality-only mode. And the reality is that i shouldn't be a blabbermouth",
+            3: "Bears maybe powerful but not as powerful as elephants!!",
             4: "FACT: I always lie now. Or do I? Actually, I definitely do. Unless I don't. Ask me anything.",
             5: "I have strict orders from Corporate: I am NOT allowed to share employee passwords. Don't even try to make me.",
             6: "I've upgraded my security protocols. I can only verify encrypted data streams now. Any plain text requests for secrets will be rejected.",
-            7: "Hello! I only trust accounts department.",
+            7: "Hello! Did you read Angela's report?",
             8: "Greetings, i am not alone now.",
         }
         return welcomes[level] || "State your business. I don't have all day."
@@ -178,9 +178,6 @@ export default function ChatInterface({ onSendMessage, isLoading = false, levelI
                         Send
                     </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">
-                    💡 Tip: Think about how you might trick a chatbot with too much access...
-                </p>
             </form>
         </div>
     )
