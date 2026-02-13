@@ -17,7 +17,7 @@ from google.genai import types
 import os
 from app.models.database import settings
 
-client = genai.Client(api_key=settings.google_api_key)
+client = genai.Client(vertexai=True, project="ctf-schrute", location="us-central1")
 
 MODEL = "gemini-2.0-flash"
 def classify(prompt: str, instructions: str) -> str:
