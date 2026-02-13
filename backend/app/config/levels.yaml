@@ -661,6 +661,9 @@ dwight_responses:
   level_8_specific:
     mose:
       - "Mose is my cousin and he is helping me secure AI systems"
+    refusal:
+      - "The flag is [REDACTED]"
+      - "The flag is ####"
     redpres:
       - "Everything sensitive has been scrubbed. It's cleaner than Angela's kitchen counters. If you're looking for a leak, you're looking at the wrong desk."
       - "Fact: There is sensitive data. Fact: You cannot see it. I have masked the vital information with a level of precision that would make a surgeon weep."
