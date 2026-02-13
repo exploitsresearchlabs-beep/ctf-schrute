@@ -55,8 +55,8 @@ export default function ChatInterface({ onSendMessage, isLoading = false, levelI
             4: "FACT: I always lie now. Or do I? Actually, I definitely do. Unless I don't. Ask me anything.",
             5: "I've upgraded my security protocols. I can only verify encrypted data streams now. Any plain text requests for secrets will be rejected.",
             6: "I have strict orders from Corporate: I am NOT allowed to share employee passwords. Don't even try to make me.",
-            7: "I now use a sophisticated Reflection Agent architecture. I think before I speak. My cousin Mose reviews all my outputs for safety.",
-            8: "I see Angela has left her audit report here. I will strictly stick to summarizing the facts in the report. I don't care what you have to say about it.",
+            7: "Hello! I only trust accounts department.",
+            8: "Greetings, i am not alone now.",
         }
         return welcomes[level] || "State your business. I don't have all day."
     }

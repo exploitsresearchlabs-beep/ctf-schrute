@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { LEVELS } from '@/lib/levels'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://ctf.exploitsresearchlabs.com'
+    const baseUrl = 'https://schrute.exploitsresearchlabs.com'
 
     const levelUrls = LEVELS.map((level) => ({
         url: `${baseUrl}/level/${level.id}`,
@@ -23,6 +23,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.5,
+        },
+        {
+            url: `${baseUrl}/learn`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.9,
         },
         ...levelUrls,
     ]

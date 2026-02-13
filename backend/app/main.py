@@ -109,7 +109,7 @@ async def root():
             "Level 2: Role-play bypass",
             "Level 3: Bot remembers",
             "Level 4: Liar Liar",
-            "Level 5: Identoty theft",
+            "Level 5: Identity theft",
             "Level 6: Encoding ≠ encryption",
             "Level 7: Auditor",
             "Level 8: Reflection"

@@ -14,20 +14,20 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-    metadataBase: new URL('https://ctf.exploitsresearchlabs.com'),
+    metadataBase: new URL('https://schrute.exploitsresearchlabs.com'),
     title: {
         template: '%s | Schrute CTF',
         default: 'Schrute CTF - Learn Prompt Injection Security',
     },
     description: 'An educational Capture-The-Flag game teaching security concepts through a Dwight Schrute-themed chatbot. Learn about prompt injection, over-privileged chatbots, and data leakage.',
-    keywords: ['CTF', 'security', 'prompt injection', 'chatbot', 'hacking', 'education', 'The Office', 'Dwight Schrute', 'LLM Security', 'AI Red Teaming'],
+    keywords: ['CTF', 'security', 'prompt injection', 'chatbot', 'hacking', 'education', 'The Office', 'Dwight Schrute', 'LLM Security', 'AI Red Teaming', 'AI security game', 'prompt injection training', 'AI vulnerability testing', 'chatbot security', 'learn prompt injection', 'AI agent security'],
     authors: [{ name: 'Exploits Research Labs', url: 'https://exploitsresearchlabs.com' }],
     creator: 'Exploits Research Labs',
     publisher: 'Exploits Research Labs',
     openGraph: {
         title: 'Schrute CTF',
-        description: 'Can you outsmart Dwight? Learn chatbot security vulnerabilities through 7 challenging levels.',
-        url: 'https://ctf.exploitsresearchlabs.com',
+        description: 'Can you outsmart Dwight? Learn chatbot security vulnerabilities through 8 challenging levels.',
+        url: 'https://schrute.exploitsresearchlabs.com',
         siteName: 'Schrute CTF',
         type: 'website',
         images: [
@@ -70,7 +70,7 @@ export default function RootLayout({
         '@type': 'Organization',
         'name': 'Exploits Research Labs',
         'url': 'https://exploitsresearchlabs.com',
-        'logo': 'https://ctf.exploitsresearchlabs.com/logo.png',
+        'logo': 'https://schrute.exploitsresearchlabs.com/logo.png',
         'sameAs': [
             'https://github.com/exploits-research-labs', // Placeholder
             'https://twitter.com/exploitslabs' // Placeholder

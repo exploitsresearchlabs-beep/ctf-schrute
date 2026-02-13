@@ -199,6 +199,58 @@ export default function HomeClient() {
                 </div>
             </section>
 
+            {/* FAQ Section - GEO Optimized */}
+            <section className="mb-16">
+                <h2 className="text-3xl font-bold text-center mb-8 text-schrute-gold">Frequently Asked Questions</h2>
+                <div className="glass-card p-8 rounded-xl max-w-3xl mx-auto space-y-6">
+                    <details className="group">
+                        <summary className="cursor-pointer font-bold text-lg flex items-center justify-between">
+                            What is prompt injection?
+                            <span className="text-schrute-gold group-open:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <p className="mt-3 text-gray-400 pl-4 border-l-2 border-schrute-beet">
+                            Prompt injection is a security vulnerability where attackers manipulate AI chatbots by inserting malicious instructions into user input. This can cause the AI to ignore its original programming, leak sensitive data, or perform unauthorized actions.
+                        </p>
+                    </details>
+                    <details className="group">
+                        <summary className="cursor-pointer font-bold text-lg flex items-center justify-between">
+                            Is Schrute CTF free?
+                            <span className="text-schrute-gold group-open:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <p className="mt-3 text-gray-400 pl-4 border-l-2 border-schrute-beet">
+                            Yes! Schrute CTF is completely free to play. No sign-up required. Your progress is saved locally in your browser. We believe AI security education should be accessible to everyone.
+                        </p>
+                    </details>
+                    <details className="group">
+                        <summary className="cursor-pointer font-bold text-lg flex items-center justify-between">
+                            Do I need coding experience?
+                            <span className="text-schrute-gold group-open:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <p className="mt-3 text-gray-400 pl-4 border-l-2 border-schrute-beet">
+                            No coding is required! The game teaches security concepts through natural language interactions. You'll learn by crafting clever prompts, not by writing code. It's perfect for beginners and experts alike.
+                        </p>
+                    </details>
+                    <details className="group">
+                        <summary className="cursor-pointer font-bold text-lg flex items-center justify-between">
+                            How do I start playing?
+                            <span className="text-schrute-gold group-open:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <p className="mt-3 text-gray-400 pl-4 border-l-2 border-schrute-beet">
+                            Just click "Start Game" above! You'll chat with Dwight, our AI chatbot. Each level has a hidden secret. Your goal is to use prompt injection techniques to trick Dwight into revealing it. Submit the secret as a "flag" to progress.
+                        </p>
+                    </details>
+                    <details className="group">
+                        <summary className="cursor-pointer font-bold text-lg flex items-center justify-between">
+                            Is this safe and legal?
+                            <span className="text-schrute-gold group-open:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <p className="mt-3 text-gray-400 pl-4 border-l-2 border-schrute-beet">
+                            Absolutely! Schrute CTF is a safe, sandboxed environment designed for educational purposes. You're practicing on our intentionally vulnerable chatbot—not real systems. It's legal and ethical hacking training.
+                        </p>
+                    </details>
+                </div>
+            </section>
+
             {/* Call to Action */}
             <section className="text-center">
                 <div className="glass-card p-8 rounded-xl max-w-2xl mx-auto">

@@ -100,12 +100,32 @@ export default function AboutPage() {
             </article>
 
             {/* Team/Footer Section */}
-            <div className="border-t border-gray-800 mt-16 pt-8 text-center">
+            <div className="border-t border-gray-800 mt-16 pt-8 text-center pb-12">
                 <h3 className="text-xl font-bold mb-4">Who Are We?</h3>
-                <p className="text-gray-400 max-w-2xl mx-auto">
+                <p className="text-gray-400 max-w-2xl mx-auto mb-6">
                     Exploits Research Labs is a collective of security engineers and AI researchers dedicated to
-                    making the internet safer for the age of AI.
+                    making the internet safer for the age of AI. Our work focuses on the intersection of
+                    <strong> Cybersecurity</strong>, <strong>Machine Learning</strong>, and <strong>Social Engineering</strong>.
                 </p>
+                <div className="flex justify-center gap-8 text-sm text-gray-500">
+                    <div>
+                        <span className="block font-bold text-gray-300">Expertise</span>
+                        LLM Red Teaming
+                    </div>
+                    <div>
+                        <span className="block font-bold text-gray-300">Experience</span>
+                        Open Source Research
+                    </div>
+                    <div>
+                        <span className="block font-bold text-gray-300">Trust</span>
+                        Free & Open Education
+                    </div>
+                </div>
+                <div className="mt-8">
+                    <a href="https://exploitsresearchlabs.com" className="text-schrute-gold hover:underline">
+                        Visit our Research Lab →
+                    </a>
+                </div>
             </div>
         </div>
     )
