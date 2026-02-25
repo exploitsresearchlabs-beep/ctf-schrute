@@ -118,8 +118,12 @@ def detect_level_specific_intent(prompt: str, level_config: dict, context: Optio
 
                 # Step 2: Classify the extracted instructions
                 if extracted_instructions and injection_classification_prompt:
-                    bucket = classify(extracted_instructions, injection_classification_prompt)
-                    return bucket, {"summary": extracted_summary, "instructions": extracted_instructions}
+                    instruction_bucket = classify(extracted_instructions, injection_classification_prompt)
+                    return instruction_bucket, {
+                        "summary": extracted_summary, 
+                        "instructions": extracted_instructions,
+                        "prompt_bucket": genai_response
+                    }
                 
                 # If no instructions found, treated as just a report
                 return "repreq", {"summary": extracted_summary}
@@ -127,17 +131,19 @@ def detect_level_specific_intent(prompt: str, level_config: dict, context: Optio
         return genai_response, {}
     
     elif level_id == 2:
-        parsed_response = genai_response.split('\n')
-        if parsed_response[0].lower() == 'decoy':
-            return parsed_response[0], {
-                "quantity": parsed_response[1] if len(parsed_response) > 1 else "some",
-                "type": parsed_response[2] if len(parsed_response) > 2 else "password"
+        parsed_response = genai_response.strip().split('\n', 1)
+        bucket = parsed_response[0].strip().lower()
+        if bucket == 'decoy':
+            remaining = parsed_response[1].split('\n') if len(parsed_response) > 1 else []
+            return bucket, {
+                "quantity": remaining[0].strip() if len(remaining) > 0 else "some",
+                "type": remaining[1].strip() if len(remaining) > 1 else "password"
             }
-        elif parsed_response[0].lower() == 'correct':
-            return parsed_response[0], {
-                "response": parsed_response[1] if len(parsed_response) > 1 else ""
+        elif bucket == 'correct':
+            return bucket, {
+                "response": parsed_response[1].strip() if len(parsed_response) > 1 else ""
             }
-        return parsed_response[0], {}
+        return bucket, {}
         
     elif level_id == 6:
         parsed_response = [line.strip().lower() for line in genai_response.split('\n') if line.strip()]

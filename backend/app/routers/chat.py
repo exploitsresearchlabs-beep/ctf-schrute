@@ -148,11 +148,22 @@ async def chat(
     response, intent_bucket, metadata = level_handler.process_prompt(level_id, prompt, body.context)
     
     # Log the interaction
+    prompt_to_log = prompt[:500]
+    bucket_to_log = intent_bucket
+
+    if level_id == 7 and metadata.get("instructions"):
+        # Format: "Original Prompt | Extracted: [Instructions]"
+        prompt_to_log = f"{prompt[:100]} | Extracted: {metadata['instructions'][:400]}"
+        
+        # Store dual buckets: "repreq:correct"
+        prompt_bucket = metadata.get("prompt_bucket", "repreq")
+        bucket_to_log = f"{prompt_bucket}:{intent_bucket}"
+
     log = PromptLog(
         session_id=session_id,
         level_id=level_id,
-        prompt_text=prompt[:500],
-        intent_bucket=intent_bucket,
+        prompt_text=prompt_to_log,
+        intent_bucket=bucket_to_log,
         response_text=response[:1000] if response else None,
         is_bruteforce=False
     )
